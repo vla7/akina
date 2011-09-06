@@ -1,4 +1,4 @@
-﻿<?php
+ <?php
 function preview($filename, $final_filename, $thumb_width, $thumb_height)
 {
 global $config, $_POST;
@@ -216,8 +216,9 @@ function check_and_move($filename)
 global $config, $_POST;
 
 $info=getimagesize("{$config['working_dir']}$filename");
-$mime=mime_content_type("{$config['working_dir']}$filename"); //!FIXME: заменить на http://www.php.net/manual/ru/ref.fileinfo.php
-//$mime=fileinfo(finfo_open(FILEINFO_MIME_TYPE), $config['working_dir'].$filename);
+
+$mime=finfo_file(finfo_open(FILEINFO_MIME_TYPE), "{$config['working_dir']}$filename");
+
 $stat=stat("{$config['working_dir']}$filename");
 
 if (!in_array($mime, $config['mimes']))
