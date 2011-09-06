@@ -1,4 +1,4 @@
-﻿<?php
+ <?php
 
 include_once 'config.php';
 include_once 'functions.php';
@@ -41,7 +41,7 @@ else
 	
 
 $cachefile=$config['site_dir']."/cache"; 
-if (time()-filemtime($cachefile)>60*60) //60*60 = 1 час 
+if (time()-filemtime($cachefile)>$config['cache_time']) //60*60 = 1 час 
 { 
 	touch($cachefile);//чтобы только один пользователь запускал подсчет 
 	list($size, $images_total, $images_h24)=get_dir_size($config['uploaddir']);
