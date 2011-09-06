@@ -41,7 +41,7 @@ else
 	
 
 $cachefile=$config['site_dir']."/cache"; 
-if (time()-filemtime($cachefile)>$config['cache_time']) //60*60 = 1 час 
+if (time()-filemtime($cachefile)>$config['cache_time'])
 { 
 	touch($cachefile);//чтобы только один пользователь запускал подсчет 
 	list($size, $images_total, $images_h24)=get_dir_size($config['uploaddir']);
