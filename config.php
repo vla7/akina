@@ -59,6 +59,7 @@ $config['current_path']=$config['current_month'].'/'.$config['current_day'];
 
 $config['random_str_quantity']=25;
 $config['site_work']=true;
+$config['cache_time']=60*60; //в секундах, 1 час.
 
 //////////////////////////////////////Вывод ошибок//////////////////////////////////////
 
