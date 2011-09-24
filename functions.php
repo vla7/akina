@@ -418,7 +418,7 @@ function formatfilesize($size)
   $iec = array('B', 'Kb', 'Mb', 'Gb', 'Tb');
   while (($size/1024)>1)
   {
-    $size=$size/1024;
+    $size /= 1024;
     $i++;
   }
   return(round($size,1)." ".$iec[$i]);
