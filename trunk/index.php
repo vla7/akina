@@ -2,14 +2,9 @@
 
 include_once 'config.php';
 include_once 'functions.php';
-include_once 'engine.php';
 
 if ($config['site_work']!=true)
-{
 	die ("Проводятся сервисные работы. Сервис временно недоступен.");
-}
-
-
 
 $parse_main=array();
 
@@ -21,6 +16,7 @@ if(!$view && $action=='')
 
 elseif($action=='upload')
 {
+  include_once 'engine.php';
 	include_once 'upload.php';
 	include_once 'view.php';
 }
