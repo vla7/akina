@@ -208,6 +208,16 @@ function random_string($length, $chartypes)
 	return $string;
 }
 
+function get_mime($file)
+    {
+             if (function_exists('finfo_open')) {
+                     return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $file);
+             } elseif (function_exists('mime_content_type')) {
+                     return mime_content_type ($file);
+             } elseif (function_exists('exec') and strtoupper(substr(PHP_OS, 0, 3)) === 'LIN') {
+                     return exec("file -i ".$file." | cut -d\" \" -f2 | sed 's/;$//'");
+             }
+    }
 
 
 function check_and_move($filename)
@@ -215,11 +225,11 @@ function check_and_move($filename)
 
 global $config, $_POST;
 
-$info=getimagesize("{$config['working_dir']}$filename");
+$info=getimagesize($config['working_dir'].$filename);
 
-$mime=finfo_file(finfo_open(FILEINFO_MIME_TYPE), "{$config['working_dir']}$filename");
+$mime=get_mime($config['working_dir'].$filename);
 
-$stat=stat("{$config['working_dir']}$filename");
+$stat=stat($config['working_dir'].$filename);
 
 if (!in_array($mime, $config['mimes']))
 	$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются JPEG, GIF, PNG. Вы пытались залить $mime";
