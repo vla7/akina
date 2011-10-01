@@ -51,6 +51,7 @@ $parse_main['{size}']= $size;
 $parse_main['{images}']= $images_total; 
 $parse_main['{images24}']=$images_h24;
 
+$parse_main['{site_http_path}']=$config['site_url'];
 
 echo parse_template(get_template('index'), $parse_main);
 ?>
