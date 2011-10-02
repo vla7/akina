@@ -22,40 +22,9 @@ function RemoveImages1() {
 		tbl.deleteRow(lastRow - 1);
 	}
 }
-/*
-function AddImages2() {
-	var tbl = document.getElementById("imageup2");
-	var lastRow = tbl.rows.length;
-	var iteration = lastRow+1;
-	var row = tbl.insertRow(lastRow);
-	
-	var cellRight = row.insertCell(0);
-	cellRight.innerHTML = '<span">'+iteration+': <'+'/'+'span>';
-	
-	cellRight = row.insertCell(1);
-	
-	var el = document.createElement('input');
-	el.setAttribute('type', 'text');
-	el.setAttribute('name', 'web_uploadfile[' + iteration + ']');
-	el.setAttribute('size', '50');
-	cellRight.appendChild(el);
-}
-function RemoveImages2() {
-	var tbl = document.getElementById('imageup2');
-	var lastRow = tbl.rows.length;
-	if (lastRow > 1){
-		tbl.deleteRow(lastRow - 1);
-	}
-}
-*/
-function select_field (field)
-{
-	field.focus();
-	field.select();
-}
 
 $(document).ready(function(){
-	//$("#textarea").resizer();
+	$("#textarea").resizer();
 	
 	//дисейблим
 	$(".resize_elements").attr("disabled","disabled");
@@ -63,15 +32,22 @@ $(document).ready(function(){
 
 	
 	$('#resize').click(function() {
-		if($('#resize').attr('checked'))
-			$(".resize_elements").attr("disabled", "");
+		if($('#resize').attr('checked')){
+			$(".resize_elements").removeAttr("disabled");
+			$('input:text[name=width]').focus();
+		}
 		else
 			$(".resize_elements").attr("disabled", "disabled");
 	});
 
 	$('#preview').click(function() {
-		if($('#preview').attr('checked'))
-			$(".preview_elements").attr("disabled", "");
+		if($('#preview').attr('checked')){
+			$(".preview_elements").removeAttr("disabled");
+			$('input:text[name=thumb_width]').focus();
+	//		$('#dimensions').attr('checked','checked');
+	//		$('.preview_elements').trigger('click');
+			preview_init();
+		}
 		else
 			$(".preview_elements").attr("disabled", "disabled");
 	});
@@ -87,10 +63,16 @@ $(document).ready(function(){
 	});
 	
 	$('.preview_elements').click(function() {
-		if($('#dimensions').attr('checked') || $('#nothing').attr('checked'))
-			$("#preview_text").val("");
-		else if($('#your_text').attr('checked'))
-			$("#preview_text").val("Увеличить");
+	preview_init();
 	});
+
+	function preview_init(){
+		if($('#dimensions').attr('checked'))
+			$("#preview_text").val("").attr("disabled", "disabled");
+		else if ($('#nothing').attr('checked'))
+			$("#preview_text").val("").attr("disabled","disabled");
+		else if($('#your_text').attr('checked'))
+			$("#preview_text").val("Увеличить").removeAttr("disabled").focus();
+	};
 
 });
