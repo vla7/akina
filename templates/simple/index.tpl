@@ -13,7 +13,7 @@
 <div id="wrap">
 
 <div id="header">
-<h1><a href="/">Фотохостинг Akina</a></h1>
+<h1><a href="{site_http_path}">Фотохостинг Akina</a></h1>
 <h2>Хостинг картинок</h2> 
 <div id="limite">Разрешенные форматы: JPG, GIF, PNG; max: {max_size_mb} MB; {max_width}x{max_height} px; {max_quantity} одновременно.<br /></div>
 
