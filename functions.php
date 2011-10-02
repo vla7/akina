@@ -1,4 +1,5 @@
 <?php
+include_once 'hal.php';
 function preview($filename, $final_filename, $thumb_width, $thumb_height)
 {
 global $config, $_POST;
