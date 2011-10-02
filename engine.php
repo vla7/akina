@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include_once 'hal.php';
 
 if (!is_dir ($config['working_thumb_dir']))

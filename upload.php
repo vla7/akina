@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include_once 'hal.php';
 if(($_POST['resize'] == true) and ($_POST['width']+$_POST['height']==0))
 	$error[]='Выбрана опция изменения размера, но не установлена ни ширина ни высота!';
