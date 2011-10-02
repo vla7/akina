@@ -1,4 +1,6 @@
 ﻿<?php
+include_once 'hal.php';
+
 //страница просмотра
 if($_REQUEST['v'] and !$_POST)
 {

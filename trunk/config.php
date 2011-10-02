@@ -1,4 +1,5 @@
 <?php
+include_once 'hal.php';
 //////////////////////////////////////параметры изображений//////////////////////////////////////
 $config['max_size_mb']=5;
 $config['max_size_byte']=$config['max_size_mb']*1048576; // (bytes)
@@ -17,7 +18,7 @@ $config['site_dir']=getcwd();
 $config['uploaddir']=$config['site_dir'].'/'.'img/';
 $config['thumbdir']=$config['site_dir'].'/'.'thumbs/';
 $config['working_dir']=$config['site_dir'].'/'.'working/';
-$config['working_thumb_dir']=$config['site_dir'].'/'.'thumbs/working/';
+$config['working_thumb_dir']=$config['working_dir'].'/thumbs/';
 
 //////////////////////////////////////URL//////////////////////////////////////
 
