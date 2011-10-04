@@ -15,9 +15,9 @@ $config['mimes']=array('image/gif', 'image/pjpeg', 'image/jpeg', 'image/png');
 //////////////////////////////////////абсолютные пути//////////////////////////////////////
 
 $config['site_dir']=getcwd();
-$config['uploaddir']=$config['site_dir'].'/'.'img/';
-$config['thumbdir']=$config['site_dir'].'/'.'thumbs/';
-$config['working_dir']=$config['site_dir'].'/'.'working/';
+$config['uploaddir']=$config['site_dir'].'/img/';
+$config['thumbdir']=$config['site_dir'].'/thumbs/';
+$config['working_dir']=$config['site_dir'].'/working/';
 $config['working_thumb_dir']=$config['working_dir'].'/thumbs/';
 
 //////////////////////////////////////URL//////////////////////////////////////
@@ -31,7 +31,7 @@ $config['img_url']=$config['site_url'].'img/';
 //////////////////////////////////////Шаблон//////////////////////////////////////
 
 $config['template_name']='whatsyoursolution';
-$config['template_path']=$config['site_dir'].'/'.'templates/'.$config['template_name'];
+$config['template_path']=$config['site_dir'].'/templates/'.$config['template_name'];
 $config['template_url']=$config['site_url'].'templates/'.$config['template_name'];
 
 //////////////////////////////////////CURL//////////////////////////////////////
