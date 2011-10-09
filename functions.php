@@ -417,8 +417,8 @@ function get_dir_size($dir_name)
           }
         }
       }
+      closedir($dh);
     }
-    closedir($dh);
   }
   return array ($dir_size, $file_count,$file24_count);
 }
