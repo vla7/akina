@@ -5,7 +5,6 @@ function preview($filename, $final_filename, $thumb_width, $thumb_height)
 global $config, $_POST;
 
 	copy("{$config['working_dir']}$filename", "{$config['working_thumb_dir']}$filename");
-
 	resize("{$config['working_thumb_dir']}$filename", $thumb_width, $thumb_height, $_POST['texttype']);
 	rename("{$config['working_thumb_dir']}$filename", "{$config['thumbdir']}{$config['current_path']}/$final_filename");
 }
@@ -126,8 +125,7 @@ for ($i=0;$i<$resize_width;$i++)
 
 function CURL($url)
 {
-
-	global $config, $error;
+global $config, $error;
 
 	$host = str_replace("http://", "", $url);
 	$host = preg_replace("#/$#si", "", $host);
@@ -136,10 +134,10 @@ function CURL($url)
 	$curl = curl_init($url);
 	//указываем адрес страницы
 	curl_setopt($curl, CURLOPT_URL,$url);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); 
-	curl_setopt($curl, CURLOPT_TIMEOUT, $config['web_timeout']); 
-	curl_setopt($curl, CURLOPT_HTTPHEADER, $config['curl_headers']); 
-	curl_setopt($curl, CURLOPT_USERAGENT, $config['curl_user_agent']); 
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($curl, CURLOPT_TIMEOUT, $config['curl_timeout']);
+	curl_setopt($curl, CURLOPT_HTTPHEADER, $config['curl_headers']);
+	curl_setopt($curl, CURLOPT_USERAGENT, $config['curl_user_agent']);
 	//gzip
 	//curl_setopt($curl,CURLOPT_ENCODING,'gzip,deflate');
 
@@ -164,8 +162,6 @@ function CURL($url)
 		return true;
 
 	curl_close($curl);
-
-
 }
 
 
@@ -417,7 +413,7 @@ function get_dir_size($dir_name)
           }
         }
       }
-      closedir($dh);
+    closedir($dh);
     }
   }
   return array ($dir_size, $file_count,$file24_count);
