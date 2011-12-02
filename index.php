@@ -20,8 +20,10 @@ elseif($action=='upload')
 	include_once 'upload.php';
 	include_once 'view.php';
 }
-else
+elseif($view)
 	include_once 'view.php';
+else
+  include_once 'error404.php';
 
 $parse_main['{max_height}']=$config['max_height'];
 $parse_main['{max_width}']=$config['max_width'];
