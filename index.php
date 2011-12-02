@@ -14,15 +14,13 @@ $action = isset($_POST['action']) ? (string)$_POST['action'] : '';
 
 if(!$view && $action=='')
 	$parse_main['{content}']=parse_template(get_template('upload'), array());
-
 elseif($action=='upload')
 {
-  include_once 'engine.php';
+	include_once 'engine.php';
 	include_once 'upload.php';
 	include_once 'view.php';
 }
-
-elseif($view)
+else
 	include_once 'view.php';
 
 $parse_main['{max_height}']=$config['max_height'];
@@ -42,16 +40,15 @@ if (time()-@filemtime($cachefile)>$config['cache_time'])
 { 
 	touch($cachefile);//чтобы только один пользователь запускал подсчет 
 	list($size, $images_total, $images_h24)=get_dir_size($config['uploaddir']);
-  $size = formatfilesize($size);
+	$size = formatfilesize($size);
 	file_put_contents( $cachefile, "$images_total|$size|$images_h24"); 
 } 
 elseif (file_exists($cachefile))
 	list($images_total, $size, $images_h24) = explode("|", file_get_contents($cachefile)); 
 
-$parse_main['{size}']= $size; 
-$parse_main['{images}']= $images_total; 
+$parse_main['{size}']=$size; 
+$parse_main['{images}']=$images_total; 
 $parse_main['{images24}']=$images_h24;
-
 $parse_main['{site_http_path}']=$config['site_url'];
 
 echo parse_template(get_template('index'), $parse_main);

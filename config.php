@@ -36,7 +36,7 @@ $config['template_url']=$config['site_url'].'templates/'.$config['template_name'
 
 //////////////////////////////////////CURL//////////////////////////////////////
 
-$config['web_timeout'] = 120;//таймаут для curl
+$config['curl_timeout'] = 120;//таймаут для curl
 $config['curl_user_agent']='User-Agent: Opera/9.80 (X11; Linux i686; U; ru) Presto/2.9.168 Version/11.50';
 $config['curl_headers']=array( 
 'GET / HTTP/1.1',
