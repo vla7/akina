@@ -42,7 +42,7 @@ if ($urls_quantity>=1)
 				$parse_one_img['{view_img}']= $img['view_img_page'];
 				$parse_one_img['{url_img}']=$img['url_img'];
 				$bb_img_arr[]=$parse_one_img['{bb_img}']='[url='.$config['site_url'].']'.$img['bb_img'].'[/url]';
-				$html_img_arr[]=$parse_one_img['{html_img}']='<a href='.$config['site_url'].'>'.$img['html_img'].'</a>';
+				$html_img_arr[]=$parse_one_img['{html_img}']='<a href=\''.$config['site_url'].'\'>'.$img['html_img'].'</a>';
 	
 				$parse_one_img['{width}']=$width;
 				$parse_one_img['{height}']=$height;
