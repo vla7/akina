@@ -1,16 +1,8 @@
 <form enctype="multipart/form-data" method="post">
+<input type="hidden" name="action" value="upload" />
 		<div class="right_left">
 		  <h2>Загрузить с компьютера:</h2>
-		  <input type="hidden" name="action" value="upload" />
-					<input type="hidden" name="area" value="" />
-					<input type="button" class="button" value="Убрать поле" onClick="RemoveImages1();return false;" />&nbsp;
-					<input type="button" class="button" value="Добавить поле" onClick="AddImages1();return false;" /><br /><br/>
-
-					<table id="imageup1" class="upload">
-						<tr id="row">
-						<td>1: </td><td><input type="file" size="30" name="local_uploadfile[]" /></td>
-						</tr>
-					</table>
+			 <input type="file" multiple="multiple" accept="image" size="30" name="local_uploadfile[]">
 		</div>
 		<div class="right_right">
 		  <h2>Загрузить по ссылке(ам):</h2>
