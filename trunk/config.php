@@ -76,4 +76,6 @@ if (!function_exists('curl_version'))
 if($config['max_size_mb']>ini_get('post_max_size'))
     $error[]='Ошибка! Максимальный размер POST в настройках php ('.ini_get('post_max_size').') меньше максимально допустимого размера загружаемого изображения, заданного в настройках фотохостинга ('.$config['max_size_mb'].' МБ)';
 
+if (!function_exists('finfo_open') and !function_exists('mime_content_type') and (!function_exists('exec') or !strtoupper(substr(PHP_OS, 0, 3)) === 'LIN')) 
+  $error[]='Ошибка! Отсутствуют обязательные функции "finfo_open" и "mime_content_type". Должна быть хотя бы одна из них, либо должна быть доступна функция "exec" и хостинг на базе Линукс, но и это не так. Обратитесь к хостеру.';
 ?>
