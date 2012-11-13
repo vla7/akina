@@ -1,29 +1,3 @@
-function AddImages1() {
-	var tbl = document.getElementById("imageup1");
-	var lastRow = tbl.rows.length;
-	var iteration = lastRow+1;
-	var row = tbl.insertRow(lastRow);
-	
-	var cellRight = row.insertCell(0);
-	cellRight.innerHTML = '<span">'+iteration+': <'+'/'+'span>';
-	
-	cellRight = row.insertCell(1);
-	
-	var el = document.createElement('input');
-	el.setAttribute('type', 'file');
-	el.setAttribute('name', 'local_uploadfile[' + iteration + ']');
-	el.setAttribute('size', '30');
-	cellRight.appendChild(el);
-}
-function RemoveImages1() {
-	var tbl = document.getElementById('imageup1');
-	var lastRow = tbl.rows.length;
-	if (lastRow > 1){
-		tbl.deleteRow(lastRow - 1);
-	}
-}
-
-
 // создаём плагин resizer
 jQuery.fn.resizer = function() {
   // выполняем плагин для каждого объекта
