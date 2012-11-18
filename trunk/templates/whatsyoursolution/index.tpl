@@ -3,8 +3,8 @@
 <head>
 <title>Фотохостинг Аkina</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="{template}/images/style1.7.css" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="{template}/images/style.css" />
+<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 <script src="{template}/main.js" type="text/javascript"></script>
 </head>
 <body>

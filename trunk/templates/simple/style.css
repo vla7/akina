@@ -152,7 +152,7 @@ margin-top: -30px;
 bottom:0;
 line-height:15px;
 }
-.errors{
+.alert-error{
 background:#FFCCCC;
 border:1px solid red;
 }

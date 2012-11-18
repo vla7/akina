@@ -243,7 +243,7 @@ input.text:hover {
 	margin: 4px 0 3px 0; 
 	padding: 0; 
 }*/
-.errors{
+.alert-error{
 	padding: 3px;
 	margin: 4px 0 3px 0; 
 	background:#FFCCCC;
