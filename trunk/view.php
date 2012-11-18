@@ -35,9 +35,9 @@ if ($urls_quantity>=1)
 			else 
 				$viewpage_img_width=$config['view_one_width'];
 				if($urls_quantity==1)
-					$parse_one_img['{img}']='<a href="'.$img['url_img'].'"><img src='.$img['url_img'].' alt="" width="'.$viewpage_img_width.'"></a>';
+					$parse_one_img['{img}']='<a href="'.$img['url_img'].'"><img src='.$img['url_img'].' rw="'.$width.'" rh="'.$height.'" width="'.$viewpage_img_width.'"></a>';
 				else
-					$parse_one_img['{img}']='<a href="'.$img['url_img'].'"><img src='.$img['url_img'].' alt="" width="'.$config['view_multi_width'].'"></a>';
+					$parse_one_img['{img}']='<a href="'.$img['url_img'].'"><img src='.$img['url_img'].' rw="'.$width.'" rh="'.$height.'" width="'.$config['view_multi_width'].'"></a>';
 	
 				$parse_one_img['{view_img}']= $img['view_img_page'];
 				$parse_one_img['{url_img}']=$img['url_img'];
