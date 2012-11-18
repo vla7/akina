@@ -22,7 +22,7 @@ if ($urls_quantity>=1)
 	foreach($images_array as $img_filename => $img)
 	{
 		if($img['error'])
-			$parse_main['{content}'] .='<div class="errors">Изображение не загружено. '.$img['error'].'</div>';
+			$parse_main['{content}'] .= parse_template (get_template('info'), array("{type}" =>'error',"{title}" =>"Ошибка!","{text}" => "Изображение не загружено. ".$img['error']));
 		else
 		{	
 			$info=getimagesize($img['local_path']);
