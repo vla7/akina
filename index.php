@@ -31,8 +31,8 @@ $parse_main['{max_size_mb}']=$config['max_size_mb'];
 $parse_main['{max_quantity}']=ini_get('max_file_uploads');
 
 $parse_main['{template}']=$config['template_url'];
-if($error)
-	$parse_main['{error}']="<div class='errors'>".implode("<br />", $error)."</div>";
+if(is_array($error))
+	$parse_main['{error}']=parse_template (get_template('info'), array("{type}" =>'error',"{title}" =>"Ошибка!","{text}" => implode("<br />", $error)));
 else
 	$parse_main['{error}']='';
 	
