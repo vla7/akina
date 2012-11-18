@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Хостинг картинок Akina</title>
-<meta http-equiv="Content-Language" content="English" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="{site_http_path}/engine.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="{template}/style.css" media="screen" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 <script src="{site_http_path}/js/main.js" type="text/javascript"></script>
 </head>
 <body>
