@@ -24,6 +24,15 @@ div.hbox/*,div.prev*/ {
 	-webkit-background-clip: padding;  /* Safari 4? Chrome 6? */
 	background-clip: padding-box;      /* Firefox 4, Safari 5, Opera 10, IE 9 */
 }
+.modal-backdrop {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1040;
+	background-color: black;
+}
 .modal-backdrop.fade.in {
 	opacity: .8;
 }
