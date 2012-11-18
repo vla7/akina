@@ -3,7 +3,8 @@
 <head>
 <title>Фотохостинг Аkina</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="{template}/images/style.css" />
+<link rel="stylesheet" type="text/css" href="{site_http_path}/engine.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="{template}/style.css" media="screen" />
 <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 <script src="{site_http_path}/js/main.js" type="text/javascript"></script>
 </head>
