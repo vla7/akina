@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="{template}/images/style.css" />
 <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
-<script src="{template}/main.js" type="text/javascript"></script>
+<script src="{site_http_path}/js/main.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="content">

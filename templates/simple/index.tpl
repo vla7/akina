@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" href="{template}/style.css" media="screen" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"></script>
-<script src="{template}/main.js" type="text/javascript"></script>
+<script src="{site_http_path}/js/main.js" type="text/javascript"></script>
 </head>
 <body>
 
