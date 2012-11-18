@@ -5,8 +5,8 @@ $config['max_size_mb']=5;
 $config['max_size_byte']=$config['max_size_mb']*1048576; // (bytes)
 $config['max_height']=5000;
 $config['max_width']=5000;
-$config['view_one_width']=750; //ширина картинки на странице просмотра. картинка одна, большая
-$config['view_multi_width']=200; //ширина картинок на странице просмотра при мультизагрузке
+$config['view_one_width']="auto"; //ширина картинки на странице просмотра. картинка одна, большая
+$config['view_multi_width']="auto"; //ширина картинок на странице просмотра при мультизагрузке
 
 $config['quality']=100; 
 
