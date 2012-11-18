@@ -24,6 +24,66 @@ jQuery.fn.resizer = function() {
 }
 
 $(document).ready(function(){
+	//akina-lightbox
+	$(".prev a").click(function(){
+		var img = $(this).children('img');
+		var src = img.attr("src");
+		
+		var w = parseInt(img.attr("rw"));
+		var h = parseInt(img.attr("rh"));
+		var k = h/w; //коэффициент пропорций изображения
+		var wh = $(window).height();
+		var ww = $(window).width();
+		var scrollTop = $(window).scrollTop();
+
+		if((w+30)>=ww)//ширина имейджа больше экрана
+		{
+			var left = "0px";
+			var sw = ww-32;
+			var marginLeft = "5px";
+		}
+		else
+		{
+			var w2 = w/2;
+			var marginLeft = "-"+w2+"px";
+			var left = "50%";
+			var sw = w;
+		}
+		//определяем высоту блока
+		var sh=sw*k;
+
+		//if((h+20)>=wh)//высота имейджа больше экрана
+		if(sh+30>=wh)
+			var top = scrollTop+"px";
+		else
+		{
+			var h2 = sh/2;
+			var margintop = "-"+h2+"px";
+			var top = wh/2-sh/2+scrollTop;
+		}
+
+		if($("div.hbox").length == 0)
+		{
+			$('body').append('<div class="modal-backdrop fade in" onclick="$(\'div.hbox\').fadeOut(300, function() { $(\'div.hbox\').remove();$(\'div.modal-backdrop\').remove();})"></div>');
+			$('body').append('<div class="hbox" onclick="$(this).fadeOut(300, function() { $(this).remove();$(\'div.modal-backdrop\').remove();})"><img src="'+src+'"></div>');
+			$("div.hbox").css("top",wh/2+scrollTop+"px");
+		}
+		else
+			$("div.hbox").children('img').attr('src',src);
+		
+		$("div.hbox").animate({
+				top: top,
+				left: left,
+				marginLeft: marginLeft,
+				height: sh+"px",
+				width: sw+"px"
+				}, 300, function() {
+				//$("div.hbox").attr('src',src)// Animation complete.
+			});
+		$(this).blur();
+		return false;
+	})
+	
 	$("#textarea").resizer();
 	
 	//дисейблим
