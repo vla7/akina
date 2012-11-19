@@ -8,4 +8,4 @@ if (!defined('akina'))
 	@fclose($fp);
 	die;
 }
-?> 
+?>
