@@ -3,13 +3,13 @@
 <head>
 <title>Хостинг картинок Akina</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="{site_http_path}/engine.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="{site_http_path}engine.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="{template}/style.css" media="screen" />
 <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<script src="{site_http_path}/js/main.js" type="text/javascript"></script>
+<script src="{site_http_path}js/main.js" type="text/javascript"></script>
 </head>
 <body>
 
@@ -24,10 +24,8 @@
 
 <div id="menu">
 <ul>
-<!--
-<li><a href="#">About</a></li>
-<li><a href="#">Photos</a></li>
--->
+<li><a href="{site_http_path}">Главная</a></li>
+<li><a href="{site_http_path}?p=rules">Правила</a></li>
 </ul>
 </div>
 
@@ -47,4 +45,3 @@ Powered by <a href="http://akina-photohost.org">Akina</a> &copy; 2010-2011</div>
 </div>
 </body>
 </html>
-

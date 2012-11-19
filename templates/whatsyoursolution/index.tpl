@@ -3,13 +3,13 @@
 <head>
 <title>Фотохостинг Аkina</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="{site_http_path}/engine.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="{site_http_path}engine.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="{template}/style.css" media="screen" />
 <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<script src="{site_http_path}/js/main.js" type="text/javascript"></script>
+<script src="{site_http_path}js/main.js" type="text/javascript"></script>
 </head>
 <body>
 <div id="content">
@@ -22,7 +22,7 @@
     <h1><a href="{site_http_path}">Фотохостинг Аkina</a></h1>
   </div>
   <div class="subheader">
-    <div class="subheader_right"> <a href="{site_http_path}">Home</a><a href="/">About</a></div>
+    <div class="subheader_right"> <a href="{site_http_path}">Главная</a><a href="{site_http_path}?p=rules">Правила</a></div>
     <div class="subheader_left"> <a href="{site_http_path}">Are we the best? Find out!</a> </div>
   </div>
   <div class="right">
