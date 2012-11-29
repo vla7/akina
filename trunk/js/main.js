@@ -24,6 +24,23 @@ jQuery.fn.resizer = function() {
 }
 
 $(document).ready(function(){
+	$('#realfileinput').change(function(){
+		var f=$(this)[0].files.length;
+		
+		if(f>1)
+			$('.emulated_input input').val("Выбрано "+f+" файлов");
+		else if(f==1)
+		{
+			var pieces=$(this).val().split("\\");
+			$('.emulated_input input').val(pieces[pieces.length-1]);
+			
+		}
+	});
+
+	$('.emulated_input').click(function(){
+		$('#realfileinput').trigger('click');
+	});
+	
 	//akina-lightbox
 	$(".prev a").click(function(){
 		var img = $(this).children('img');
