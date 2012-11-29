@@ -36,3 +36,14 @@ div.hbox/*,div.prev*/ {
 .modal-backdrop.fade.in {
 	opacity: .8;
 }
+
+#realfileinput{
+    width:0px; 
+    height:0px;
+    visibility: hidden;
+    opacity:0;
+    filter: alpha(opacity=0);
+    padding:0px;
+    margin:0px;
+    position:absolute;
+}
