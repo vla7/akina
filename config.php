@@ -8,7 +8,7 @@ $config['max_width']=5000;
 $config['view_one_width']="auto"; //ширина картинки на странице просмотра. картинка одна, большая
 $config['view_multi_width']="auto"; //ширина картинок на странице просмотра при мультизагрузке
 
-$config['quality']=100; 
+$config['quality']=100;
 
 $config['mimes']=array('image/gif', 'image/pjpeg', 'image/jpeg', 'image/png');
 
@@ -38,7 +38,7 @@ $config['template_url']=$config['site_url'].'templates/'.$config['template_name'
 
 $config['curl_timeout'] = 120;//таймаут для curl
 $config['curl_user_agent']='User-Agent: Opera/9.80 (X11; Linux i686; U; ru) Presto/2.9.168 Version/11.50';
-$config['curl_headers']=array( 
+$config['curl_headers']=array(
 'GET / HTTP/1.1',
 'Accept: text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1',
 'Accept-Language: ru,ru-RU;q=0.9,en;q=0.8',
@@ -64,7 +64,7 @@ $config['cache_time']=60*60; //в секундах, 1 час.
 
 //////////////////////////////////////Вывод ошибок//////////////////////////////////////
 
-if (!extension_loaded('gd') && !function_exists('gd_info')) 
+if (!extension_loaded('gd') && !function_exists('gd_info'))
     $error[]='Модуль GD не установлен! Изменение размеров изображения и создание превью не будут работать.';
 
 if($config['max_size_mb']>ini_get('upload_max_filesize'))
@@ -76,6 +76,6 @@ if (!function_exists('curl_version'))
 if($config['max_size_mb']>ini_get('post_max_size'))
     $error[]='Ошибка! Максимальный размер POST в настройках php ('.ini_get('post_max_size').') меньше максимально допустимого размера загружаемого изображения, заданного в настройках фотохостинга ('.$config['max_size_mb'].' МБ)';
 
-if (!function_exists('finfo_open') and !function_exists('mime_content_type') and (!function_exists('exec') or !strtoupper(substr(PHP_OS, 0, 3)) === 'LIN')) 
-  $error[]='Ошибка! Отсутствуют обязательные функции "finfo_open" и "mime_content_type". Должна быть хотя бы одна из них, либо должна быть доступна функция "exec" и хостинг на базе Линукс, но и это не так. Обратитесь к хостеру.';
+if (!function_exists('finfo_open') and !function_exists('mime_content_type'))
+  $error[]='Ошибка! Отсутствуют обязательные функции "finfo_open" и "mime_content_type". Должна быть хотя бы одна из них. Обратитесь к хостеру.';
 ?>

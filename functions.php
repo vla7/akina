@@ -11,7 +11,7 @@ global $config, $_POST;
 
 
 
-function resize($filename, $resize_width, $resize_height, $texttype=false) 
+function resize($filename, $resize_width, $resize_height, $texttype=false)
 {
 global $config, $_POST;
 
@@ -51,12 +51,12 @@ else
 		if ($type=='png') {$src = imagecreatefrompng($filename);}
 		//if ($ext=='.jpeg') {$src = imagecreatefromjpeg($filename);}
 		if ($type=='jpg') {$src = imagecreatefromjpeg($filename);}
-				
+
 		$era_x = imageSX($src);
 		$era_y = imageSY($src);
 		$filesize = formatfilesize(filesize($filename));
 		$destination = imagecreatetruecolor($resize_width,$resize_height);
-		
+
 		// gif
 		if ($type=='gif')
 		{
@@ -65,17 +65,17 @@ else
 			imagefill($destination, 0, 0, $transparente);
 			imagecolortransparent($destination, $transparente);
 			imagetruecolortopalette($destination, true, 256);
-		} 
+		}
 		else
 		{
 			imagecolortransparent($destination, imagecolorallocate($destination, 0, 0, 0) );
-		}			
-		
+		}
+
 		imagealphablending($destination, false);
       			imagesavealpha($destination, true);
-				
+
 		imagecopyresampled($destination,$src,0,0,0,0,$resize_width,$resize_height,$era_x,$era_y);
-				
+
 
 //текст на превью
 if ($texttype && $texttype!="nothing")
@@ -88,7 +88,7 @@ if ($texttype && $texttype!="nothing")
 
 $DARKNESS=70;
 for ($i=0;$i<$resize_width;$i++)
-    for ($j=0;$j<12;$j++) 
+    for ($j=0;$j<12;$j++)
 {
         $x=$i;//+550-(100+10);
         $y=$j+($resize_height-12);
@@ -106,9 +106,9 @@ for ($i=0;$i<$resize_width;$i++)
     $white=imagecolorallocate($destination,255,255,255);
 
     $mf = imageloadfont ('myfont.phpfont');
-    
+
     $text = iconv("utf-8", "windows-1251",$text);
-    
+
 	imagestring($destination, $mf, 2, $resize_height-10, $text, $white);
 }
 ///////////////////
@@ -118,9 +118,9 @@ for ($i=0;$i<$resize_width;$i++)
 		if ($type=='jpg') { imagejpeg($destination, $filename, $config['quality']); }
 		//if ($ext=='.jpeg') { imagejpeg($destination, $filename, $config['quality']); }
 
-		imagedestroy($destination); 
-		imagedestroy($src);	
-				
+		imagedestroy($destination);
+		imagedestroy($src);
+
 }
 
 function CURL($url)
@@ -165,7 +165,7 @@ global $config, $error;
 }
 
 
-function random_string($length, $chartypes) 
+function random_string($length, $chartypes)
 {
         $chartypes_array=explode(",", $chartypes);
 	// Задаем строки символов
@@ -206,15 +206,15 @@ function random_string($length, $chartypes)
 }
 
 function get_mime($file)
-    {
-             if (function_exists('finfo_open')) {
-                     return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $file);
-             } elseif (function_exists('mime_content_type')) {
-                     return mime_content_type ($file);
-             } elseif (function_exists('exec') and strtoupper(substr(PHP_OS, 0, 3)) === 'LIN') {
-                     return exec("file -i ".$file." | cut -d\" \" -f2 | sed 's/;$//'");
-             }
-    }
+{
+	global $error;
+	if (function_exists('finfo_open')) {
+		return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $file);
+	} elseif (function_exists('mime_content_type')) {
+		return mime_content_type($file);
+	} else
+		$error[]="Невозможно определить MIME изображения, нет функций finfo_open и mime_content_type";
+}
 
 
 function check_and_move($filename)
@@ -230,11 +230,11 @@ $stat=stat($config['working_dir'].$filename);
 
 if (!in_array($mime, $config['mimes']))
 	$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются JPEG, GIF, PNG. Вы пытались залить $mime";
-	
+
 elseif ($stat['size'] > $config['max_size_byte'])
 	$local_error[]="Ошибка: Превышен максимальный размер файла: {$config['max_size_mb']} МБ";
 
-elseif ($info['1'] > $config['max_height']) 
+elseif ($info['1'] > $config['max_height'])
 	$local_error[]="Ошибка: Превышена максимальная высота изображения: {$config['max_height']} пикселей";
 
 elseif ($info['0'] > $config['max_width'])
@@ -260,30 +260,30 @@ $ext=png;
 				//если пользователь не выставил значение(я) превьюшки
 				if ($_POST['thumb_width'] or $_POST['thumb_height'] )
 					preview($filename, $final_filename, $_POST['thumb_width'], $_POST['thumb_height'], $config['quality']);
-				else 
-				{ 
+				else
+				{
 					$local_error[]="Ошибка: Не указан размер превью";
-					unlink ("{$config['working_dir']}$filename"); 
+					unlink ("{$config['working_dir']}$filename");
 					exit;
 				}
 			}
-			
+
 			//если установлено уменьшение
 			if($_POST['resize']=="true")
 			{
 				if ($_POST['width'] or $_POST['height'] )
 					resize("{$config['working_dir']}$filename", $_POST['width'], $_POST['height']);
 
-				else 
-				{ 
+				else
+				{
 					$local_error[]="Ошибка: Не указан размер уменьшенного рисунка";
-					unlink ("{$config['working_dir']}$filename"); 
+					unlink ("{$config['working_dir']}$filename");
 					exit;
 				}
 			}
-    
+
 			if (!rename("{$config['working_dir']}$filename", "{$config['uploaddir']}{$config['current_path']}/$final_filename"))
-				$local_error[]= "Ошибка перемещения изображения"; 
+				$local_error[]= "Ошибка перемещения изображения";
 	  	}//if (!$local_error)
 	else
 		@unlink ("{$config['working_dir']}$filename");
@@ -313,7 +313,7 @@ $current_path=$current_month."/".$current_day;
 $current_view_path=$current_month."-".$current_day;
 
 	$img=$config['img_url'].$current_path."/".$final_filename;
-	
+
 	$images_array[$final_filename]['error']=$returned_error;
 	$images_array[$final_filename]['local_path']=$config['uploaddir'].$current_path."/".$final_filename;
 	$images_array[$final_filename]['view_img_page']=$config['site_url']."?v=".$current_view_path."_".$final_filename;
@@ -322,7 +322,7 @@ $current_view_path=$current_month."-".$current_day;
 	$images_array[$final_filename]['html_img']=htmlentities("<img src=\"$img\">");
 
 	if($thumb=="true" or is_file($config['thumbdir'].$current_path."/".$final_filename))
-	{	
+	{
 		$prev=$config['thumbs_url'].$current_path."/".$final_filename;
 		$images_array[$final_filename]['url_prev']=$prev;
 		$images_array[$final_filename]['bb_prev_and_img']="[url=".$config['site_url']."?v=".$current_view_path."_".$final_filename."][img]".$prev."[/img][/url]";
