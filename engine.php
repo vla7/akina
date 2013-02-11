@@ -15,6 +15,6 @@ if (!is_dir ($thumbdir))
 
 if (!is_writable($uploaddir))
 	$error[]="Ошибка! Директория ".$uploaddir." недоступна для записи";
-if (!is_writable($config['thumbdir'].$config['current_path']))
+if (!is_writable($thumbdir))
 	$error[]="Ошибка! Директория ".$thumbdir." недоступна для записи";
 ?>
