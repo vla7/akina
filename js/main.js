@@ -26,26 +26,26 @@ jQuery.fn.resizer = function() {
 $(document).ready(function(){
 	$('#realfileinput').change(function(){
 		var f=$(this)[0].files.length;
-		
+
 		if(f>1)
 			$('.emulated_input input').val("Выбрано "+f+" файлов");
 		else if(f==1)
 		{
 			var pieces=$(this).val().split("\\");
 			$('.emulated_input input').val(pieces[pieces.length-1]);
-			
+
 		}
 	});
 
 	$('.emulated_input').click(function(){
 		$('#realfileinput').trigger('click');
 	});
-	
+
 	//akina-lightbox
 	$(".prev a").click(function(){
 		var img = $(this).children('img');
 		var src = img.attr("src");
-		
+
 		var w = parseInt(img.attr("rw"));
 		var h = parseInt(img.attr("rh"));
 		var k = h/w; //коэффициент пропорций изображения
@@ -87,7 +87,7 @@ $(document).ready(function(){
 		}
 		else
 			$("div.hbox").children('img').attr('src',src);
-		
+
 		$("div.hbox").animate({
 				top: top,
 				left: left,
@@ -100,14 +100,18 @@ $(document).ready(function(){
 		$(this).blur();
 		return false;
 	})
-	
-	$("#textarea").resizer();
-	
-	//дисейблим
-	$(".resize_elements").attr("disabled","disabled");
-	$(".preview_elements").attr("disabled", "disabled");
 
-	
+	$("#textarea").resizer();
+
+	//дисейблим
+	if(!$('#resize').attr('checked')){
+		$(".resize_elements").attr("disabled", "disabled");
+	}
+	if(!$('#preview').attr('checked')){
+		$(".preview_elements").attr("disabled", "disabled");
+	}
+
+
 	$('#resize').click(function() {
 		if($('#resize').attr('checked')){
 			$(".resize_elements").removeAttr("disabled");
@@ -128,17 +132,17 @@ $(document).ready(function(){
 		else
 			$(".preview_elements").attr("disabled", "disabled");
 	});
-	
+
 	$('.code_fields').click(function() {
 		$(this).select()
 	});
-	
+
 	$('.code_fields').mousedown(function(e) {
 		if (e.which === 3) {
 			$(this).select()
 		}
 	});
-	
+
 	$('.preview_elements').click(function() {
 	preview_init();
 	});
