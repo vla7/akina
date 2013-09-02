@@ -233,8 +233,14 @@ function check_and_move($filename)
 	$mime=get_mime($config['working_dir'].$filename);
 
 	$stat=stat($config['working_dir'].$filename);
+	
+	$partes = explode('.', $filename);
+	$extension = $partes[count($partes) - 1];
+	
+	if (strlen($extension)<6 and !in_array($extension, $config['extensions']))
+		$local_error[]="Ошибка: Неверное расширение изображения, допускаются ".implode(', ',$config['extensions']).". Вы пытались залить $extension";
 
-	if (!in_array($mime, $config['mimes']))
+	elseif (!in_array($mime, $config['mimes']))
 		$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются JPEG, GIF, PNG. Вы пытались залить $mime";
 
 	elseif ($stat['size'] > $config['max_size_byte'])
@@ -246,51 +252,50 @@ function check_and_move($filename)
 	elseif ($info['0'] > $config['max_width'])
 		$local_error[]="Ошибка: Превышена максимальная ширина изображения: {$config['max_width']} пикселей";
 
-	if ($mime=='image/gif')
-	$ext=gif;
-	elseif ($mime=='image/pjpeg')
-	$ext=jpg;
-	elseif ($mime=='image/jpeg')
-	$ext=jpg;
-	elseif ($mime=='image/png')
-	$ext=png;
+		if (!$local_error)
+		{
+			if ($mime=='image/gif')
+				$ext=gif;
+			elseif ($mime=='image/pjpeg')
+				$ext=jpg;
+			elseif ($mime=='image/jpeg')
+				$ext=jpg;
+			elseif ($mime=='image/png')
+				$ext=png;
 
-		$final_filename=random_string($config['random_str_quantity'], 'lower,numbers').".".$ext;
-		$uploaded_file_path = strtolower($config['uploaddir'].$config['current_path'].'/'.$final_filename);
+			$final_filename=random_string($config['random_str_quantity'], 'lower,numbers').".".$ext;
+			$uploaded_file_path = strtolower($config['uploaddir'].$config['current_path'].'/'.$final_filename);
 
-			if (!$local_error)
+			if($_POST['thumb']=="true")
 			{
-
-				if($_POST['thumb']=="true")
+				//если пользователь не выставил значение(я) превьюшки
+				if ($_POST['thumb_width'] or $_POST['thumb_height'] )
+					preview($filename, $final_filename, $_POST['thumb_width'], $_POST['thumb_height'], $config['quality']);
+				else
 				{
-					//если пользователь не выставил значение(я) превьюшки
-					if ($_POST['thumb_width'] or $_POST['thumb_height'] )
-						preview($filename, $final_filename, $_POST['thumb_width'], $_POST['thumb_height'], $config['quality']);
-					else
-					{
-						$local_error[]="Ошибка: Не указан размер превью";
-						unlink ("{$config['working_dir']}$filename");
-						exit;
-					}
+					$local_error[]="Ошибка: Не указан размер превью";
+					unlink ("{$config['working_dir']}$filename");
+					exit;
 				}
+			}
 
-				//если установлено уменьшение
-				if($_POST['resize']=="true")
+			//если установлено уменьшение
+			if($_POST['resize']=="true")
+			{
+				if ($_POST['width'] or $_POST['height'] )
+					resize("{$config['working_dir']}$filename", $_POST['width'], $_POST['height']);
+
+				else
 				{
-					if ($_POST['width'] or $_POST['height'] )
-						resize("{$config['working_dir']}$filename", $_POST['width'], $_POST['height']);
-
-					else
-					{
-						$local_error[]="Ошибка: Не указан размер уменьшенного рисунка";
-						unlink ("{$config['working_dir']}$filename");
-						exit;
-					}
+					$local_error[]="Ошибка: Не указан размер уменьшенного рисунка";
+					unlink ("{$config['working_dir']}$filename");
+					exit;
 				}
+			}
 
-				if (!rename("{$config['working_dir']}$filename", "{$config['uploaddir']}{$config['current_path']}/$final_filename"))
-					$local_error[]= "Ошибка перемещения изображения";
-			}//if (!$local_error)
+			if (!rename("{$config['working_dir']}$filename", "{$config['uploaddir']}{$config['current_path']}/$final_filename"))
+				$local_error[]= "Ошибка перемещения изображения";
+		}//if (!$local_error)
 		else
 			@unlink ("{$config['working_dir']}$filename");
 

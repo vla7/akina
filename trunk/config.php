@@ -11,6 +11,7 @@ $config['view_multi_width']="auto"; //ширина картинок на стр�
 $config['quality']=100;
 
 $config['mimes']=array('image/gif', 'image/pjpeg', 'image/jpeg', 'image/png');
+$config['extensions']=array('gif', 'jpeg', 'jpg', 'png');
 
 //////////////////////////////////////абсолютные пути//////////////////////////////////////
 
@@ -44,7 +45,7 @@ $config['curl_headers']=array(
 'Accept-Language: ru,ru-RU;q=0.9,en;q=0.8',
 'Accept-Charset: iso-8859-1, utf-8, utf-16, *;q=0.1',
 'Accept-Encoding: deflate, gzip, x-gzip, identity, *;q=0',
-'Cookie: cookies_enabled=1; advmaker_pop=1',
+'Cookie: cookies_enabled=1;',
 'Cache-Control: no-cache',
 'Connection: Keep-Alive, TE',
 'TE: deflate, gzip, chunked, identity, trailers'

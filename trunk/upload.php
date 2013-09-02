@@ -19,13 +19,12 @@ if(!$error)
 				{
 					if (CURL($up))
 					{
+						$partes = explode('/', $up);
+						$filename = $partes[count($partes) - 1];
 
-					$partes = explode('/', $up);
-					$filename = $partes[count($partes) - 1];
+						list($final_filename, $returned_error)=check_and_move($filename);
 
-					list($final_filename, $returned_error)=check_and_move($filename);
-
-					make_img_code($final_filename, false, false, $returned_error);
+						make_img_code($final_filename, false, false, $returned_error);
 					}
 				}
 			}
@@ -33,18 +32,18 @@ if(!$error)
 
 		if (isset($_FILES['local_uploadfile']))
 		{
-		$local_up = $_FILES['local_uploadfile'];
-		foreach ($local_up['name'] as $key => $check)
-		{
-			if (empty($check))
+			$local_up = $_FILES['local_uploadfile'];
+			foreach ($local_up['name'] as $key => $check)
 			{
-				foreach($local_up as $type => $value)
+				if (empty($check))
 				{
-					unset($local_up[$type][$key]);
+					foreach($local_up as $type => $value)
+					{
+						unset($local_up[$type][$key]);
+					}
 				}
-			}
 
-		}
+			}
 			// Local uploading
 			if ($local_up['size'][0] ==! null)
 			{
@@ -56,7 +55,6 @@ if(!$error)
 					unset($up);
 
 					list($final_filename, $returned_error)=check_and_move($filename);
-
 
 					make_img_code($final_filename, false, false, $returned_error);
 				}
