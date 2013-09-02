@@ -1,0 +1,2 @@
+RewriteEngine On
+RedirectMatch 404 ".*(\/working\/|cache|myfont.phpfont).*"
