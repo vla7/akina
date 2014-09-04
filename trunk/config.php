@@ -42,8 +42,8 @@ $config['img_url']=$config['site_url'].'img/';
 
 //////////////////////////////////////Шаблон//////////////////////////////////////
 
-//доступные шаблоны 'bluestyle', 'graphene' , 'simple', 'whatsyoursolution'
-$config['template_name']='bluestyle'; 
+//доступные шаблоны 'graphene' , 'simple', 'whatsyoursolution'
+$config['template_name']='whatsyoursolution'; 
 $config['template_path']=$config['site_dir'].'/templates/'.$config['template_name'];
 $config['template_url']=$config['site_url'].'templates/'.$config['template_name'];
 
