@@ -1,5 +1,6 @@
 <?php
 include_once 'hal.php';
+date_default_timezone_set("Europe/Minsk"); //настройка временной зоны http://php.net/manual/en/timezones.php
 //////////////////////////////////////параметры изображений//////////////////////////////////////
 $config['max_size_mb']=5;
 $config['max_size_byte']=$config['max_size_mb']*1048576; // (bytes)
@@ -12,6 +13,16 @@ $config['quality']=100;
 
 $config['mimes']=array('image/gif', 'image/pjpeg', 'image/jpeg', 'image/png');
 $config['extensions']=array('gif', 'jpeg', 'jpg', 'png');
+
+$config['auto_resize']=0;  //Уменьшить изображение, по умолчанию форма: 0 - выключена, 1 - включена
+$config['width_resize_elements']=1024; //уменьшать изображения по ширине, по умолчанию в форме
+//$config['height_resize_elements']=768; //уменьшать изображения по высоте, по умолчанию в форме
+// для исключения искажения изображения добавляется только один параметр, по ширине - имеет приоритет.
+
+$config['auto_preview']=0;  //Создать превью, по умолчанию форма: 0 - выключена, 1 - включена
+$config['width_preview_elements']=240; //превью по ширине, по умолчанию в форме
+//$config['height_preview_elements']=180; //превью по высоте, по умолчанию в форме
+// для исключения искажения изображения добавляется только один параметр, по ширине - имеет приоритет.
 
 //////////////////////////////////////абсолютные пути//////////////////////////////////////
 
@@ -31,9 +42,19 @@ $config['img_url']=$config['site_url'].'img/';
 
 //////////////////////////////////////Шаблон//////////////////////////////////////
 
-$config['template_name']='whatsyoursolution';
+//доступные шаблоны 'bluestyle', 'graphene' , 'simple', 'whatsyoursolution'
+$config['template_name']='bluestyle'; 
 $config['template_path']=$config['site_dir'].'/templates/'.$config['template_name'];
 $config['template_url']=$config['site_url'].'templates/'.$config['template_name'];
+
+$config['site_title']='Хостинг картинок AKINA'; //Title страницы, возможно динамическое обновление 
+$config['site_header_h1']='Фотохостинг Akina'; //Текст в заголовке сайта тэг H1, возможно динамическое обновление 
+$config['site_header_h2']='Хостинг картинок'; //Текст в заголовке сайта тэг H2, возможно динамическое обновление
+
+$config['view_page']=1; //добавлять к коду изображения с превью ссылку на "Страницу просмотра" 0 - выключено, 1 - включено
+//если выключено всегда будет ссылка вести прямо на оригинальную картинку 
+
+$config['show_upload_date']=1; //показывать дату/время загрузки изображения на "Странице просмотра" 0 - выключено, 1 - включено
 
 //////////////////////////////////////CURL//////////////////////////////////////
 
@@ -62,19 +83,20 @@ $config['current_path']=$config['current_month'].'/'.$config['current_day'];
 $config['random_str_quantity']=25;
 $config['site_work']=true;
 $config['cache_time']=60*60; //в секундах, 1 час.
+$config['cachefile']=$config['working_dir']."/cachefile.dat"; //файл статистики "Изображений на фотохостинге: х; занимают х.х Kb; за сутки загружено: х"
 
 //////////////////////////////////////Вывод ошибок//////////////////////////////////////
 
 if (!extension_loaded('gd') && !function_exists('gd_info'))
     $error[]='Модуль GD не установлен! Изменение размеров изображения и создание превью не будут работать.';
 
-if($config['max_size_mb']>ini_get('upload_max_filesize'))
+if($config['max_size_mb'] > ini_get('upload_max_filesize'))
     $error[]='Ошибка! Максимально допустимый размер загружаемого изображения в php.ini ('.ini_get('upload_max_filesize').') меньше заданного в настройках фотохостинга ('.$config['max_size_mb'].' МБ)';
 
 if (!function_exists('curl_version'))
 	$error[]='Модуль cURL не установлен. Загрузка изображений с удаленных серверов не будет работать';
 
-if($config['max_size_mb']>ini_get('post_max_size'))
+if($config['max_size_mb'] > ini_get('post_max_size'))
     $error[]='Ошибка! Максимальный размер POST в настройках php ('.ini_get('post_max_size').') меньше максимально допустимого размера загружаемого изображения, заданного в настройках фотохостинга ('.$config['max_size_mb'].' МБ)';
 
 if (!function_exists('finfo_open') and !function_exists('mime_content_type'))

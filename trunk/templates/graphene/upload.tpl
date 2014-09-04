@@ -18,21 +18,21 @@
 			</td>
 		</table>
 
-<div align='center'> 
+<div align="center"> 
 
-<fieldset class='fieldsets'>
-		<legend><label> <input type="checkbox" id="resize" name="resize" value="true" /> Уменьшить изображение</label><br /></legend>
+<fieldset class="fieldsets">
+		<legend><label> <input type="checkbox" id="resize" name="resize" value="true" {auto_resize}/> Уменьшить изображение</label><br /></legend>
 				<br/>
 
-				<label>Ширина: <input name="width" size="10" type="text" class='resize_elements'></label>
-				<label>Высота: <input name="height" size="10" type="text" class='resize_elements'></label><br /><br />
+				<label>Ширина: <input name="width" size="10" type="text" class="resize_elements" {width_resize_elements}></label>
+				<label>Высота: <input name="height" size="10" type="text" class="resize_elements" {height_resize_elements}></label><br /><br />
 		</fieldset>
 
-		<fieldset class='fieldsets'>
-		<legend><label><input type="checkbox" id="preview" name="thumb" value="true" /> Создать превью</label><br /></legend>
+		<fieldset class="fieldsets">
+		<legend><label><input type="checkbox" id="preview" name="thumb" value="true" {auto_preview}/> Создать превью</label><br /></legend>
 				<br />
-				<label>Ширина: <input name="thumb_width" size="10" type="text" class="preview_elements"></label>
-				<label>Высота: <input name="thumb_height" size="10" type="text" class="preview_elements"></label><br /><br />
+				<label>Ширина: <input name="thumb_width" size="10" type="text" class="preview_elements" {width_preview_elements}></label>
+				<label>Высота: <input name="thumb_height" size="10" type="text" class="preview_elements" {height_preview_elements}></label><br /><br />
 
 				Текст на превью:
 				<br /><br />

@@ -1,8 +1,8 @@
 <?php
 include_once 'hal.php';
-
+$parse_main['{content}'] = '';
 //страница просмотра
-if($_REQUEST['v'] and !$_POST)
+if(isset($_REQUEST['v']) and (!$_POST))
 {
 	if(preg_match('/(\d{4}-\d{2})-(\d{2})_(.*)/', $_REQUEST['v'], $matches))
 	{
@@ -16,7 +16,7 @@ if($_REQUEST['v'] and !$_POST)
 
 $urls_quantity=count($images_array);
 
-if ($urls_quantity>=1)
+if ($urls_quantity >= 1)
 {
 	$view_one_template=get_template('view_one');
 	foreach($images_array as $img_filename => $img)
@@ -30,7 +30,8 @@ if ($urls_quantity>=1)
 			$width=$info['0'];
 			$height=$info['1'];
 			$size=formatfilesize($stat['size']);
-			if ($width<$config['view_one_width'])
+			if ((isset($config['show_upload_date'])) and ($config['show_upload_date']))	$size.=" , ".date("d.m.Y H:i",filemtime($img['local_path']));
+			if ($width < $config['view_one_width'])
 				$viewpage_img_width='';
 			else 
 				$viewpage_img_width=$config['view_one_width'];
@@ -42,13 +43,13 @@ if ($urls_quantity>=1)
 				$parse_one_img['{view_img}']= $img['view_img_page'];
 				$parse_one_img['{url_img}']=$img['url_img'];
 				$bb_img_arr[]=$parse_one_img['{bb_img}']='[url='.$config['site_url'].']'.$img['bb_img'].'[/url]';
-				$html_img_arr[]=$parse_one_img['{html_img}']='<a href=\''.$config['site_url'].'\'>'.$img['html_img'].'</a>';
+				$html_img_arr[]=$parse_one_img['{html_img}']='<a href=\''.$config['site_url'].'\' target=\'_blank\'>'.$img['html_img'].'</a>';
 	
 				$parse_one_img['{width}']=$width;
 				$parse_one_img['{height}']=$height;
 				$parse_one_img['{size}']=$size;
 			
-				if($img['url_prev'])
+				if(isset($img['url_prev']))
 				{
 					$parse_one_img['{url_prev}']=$img['url_prev'];
 					$bb_prev_and_img_arr[]=$parse_one_img['{bb_prev_and_img}']=$img['bb_prev_and_img'];
@@ -62,6 +63,7 @@ if ($urls_quantity>=1)
 					//превью нет. вырезаем блоки для превью
 					preg_match("/\[one_img_prev\](.*?)\[\/one_img_prev\]/isu", $view_one_template, $one_img_prev_out);
 					$parse_one_img[$one_img_prev_out['0']]='';
+					$bb_prev_and_img_arr='';
 				}
 		
 				$parse_main['{content}'] .= parse_template($view_one_template, $parse_one_img);
@@ -69,8 +71,8 @@ if ($urls_quantity>=1)
 	}//конец foreach
 
 	//если картинка одна - нафиг мульти
-	if(count($bb_img_arr)<2)
-		$view_template=preg_replace("/\[multi_img\](.*?)\[\/multi_img\]/isu", '',$view_template);
+	if(count($bb_img_arr) < 2)
+		$view_one_template=preg_replace("/\[multi_img\](.*?)\[\/multi_img\]/isu", '',$view_one_template);
 	else
 	{
 		$view_summary_template=get_template('view_summary');
@@ -78,7 +80,7 @@ if ($urls_quantity>=1)
 		$parse_multi_img['{multi_bb_img}']=implode("\n", $bb_img_arr);
 		$parse_multi_img['{multi_html_img}']=implode("\n", $html_img_arr);
 	
-		if(count($bb_prev_and_img_arr)>1)
+		if(count($bb_prev_and_img_arr) > 1)
 		{
 			$parse_multi_img['{multi_bb_prev_and_img}']=implode(' ', $bb_prev_and_img_arr);
 			$parse_multi_img['{multi_html_prev_and_img}']=implode(' ', $html_prev_and_img_arr);

@@ -235,7 +235,7 @@ function check_and_move($filename)
 	$stat=stat($config['working_dir'].$filename);
 	
 	$partes = explode('.', $filename);
-	$extension = $partes[count($partes) - 1];
+	$extension = strtolower($partes[count($partes) - 1]);
 	
 	if (strlen($extension)<6 and !in_array($extension, $config['extensions']))
 		$local_error[]="Ошибка: Неверное расширение изображения, допускаются ".implode(', ',$config['extensions']).". Вы пытались залить $extension";
@@ -252,21 +252,21 @@ function check_and_move($filename)
 	elseif ($info['0'] > $config['max_width'])
 		$local_error[]="Ошибка: Превышена максимальная ширина изображения: {$config['max_width']} пикселей";
 
-		if (!$local_error)
+		if (!isset($local_error))
 		{
 			if ($mime=='image/gif')
-				$ext=gif;
+				$ext='gif';
 			elseif ($mime=='image/pjpeg')
-				$ext=jpg;
+				$ext='jpg';
 			elseif ($mime=='image/jpeg')
-				$ext=jpg;
+				$ext='jpg';
 			elseif ($mime=='image/png')
-				$ext=png;
+				$ext='png';
 
 			$final_filename=random_string($config['random_str_quantity'], 'lower,numbers').".".$ext;
 			$uploaded_file_path = strtolower($config['uploaddir'].$config['current_path'].'/'.$final_filename);
 
-			if($_POST['thumb']=="true")
+			if((isset($_POST['thumb'])) and ($_POST['thumb']=="true"))
 			{
 				//если пользователь не выставил значение(я) превьюшки
 				if ($_POST['thumb_width'] or $_POST['thumb_height'] )
@@ -280,7 +280,7 @@ function check_and_move($filename)
 			}
 
 			//если установлено уменьшение
-			if($_POST['resize']=="true")
+			if((isset($_POST['resize'])) and ($_POST['resize']=='true'))
 			{
 				if ($_POST['width'] or $_POST['height'] )
 					resize("{$config['working_dir']}$filename", $_POST['width'], $_POST['height']);
@@ -299,8 +299,10 @@ function check_and_move($filename)
 		else
 			@unlink ("{$config['working_dir']}$filename");
 
-	if ($local_error)
+	if (isset($local_error))
 		$local_error_string=implode(', ',$local_error);
+	else
+    $local_error_string='';
 
 	return array ($final_filename, $local_error_string);
 }
@@ -335,8 +337,17 @@ function make_img_code ($final_filename, $current_month=false, $current_day=fals
 	{
 		$prev=$config['thumbs_url'].$current_path."/".$final_filename;
 		$images_array[$final_filename]['url_prev']=$prev;
-		$images_array[$final_filename]['bb_prev_and_img']="[url=".$config['site_url']."?v=".$current_view_path."_".$final_filename."][img]".$prev."[/img][/url]";
-		$images_array[$final_filename]['html_prev_and_img']=htmlentities("<a href=\"$img\"><img src=\"$prev\"></a>");
+		if ((isset($config['view_page'])) and ($config['view_page']==1))
+		{
+			$images_array[$final_filename]['bb_prev_and_img']="[url=".$config['site_url']."?v=".$current_view_path."_".$final_filename."][img]".$prev."[/img][/url]";
+			$images_array[$final_filename]['html_prev_and_img']=htmlentities("<a href=\"".$config['site_url']."?v=".$current_view_path."_".$final_filename."\" target=\"_blank\"><img src=\"".$prev."\"></a>");
+		}
+		else
+		{
+			$images_array[$final_filename]['bb_prev_and_img']="[url=".$img."][img]".$prev."[/img][/url]";
+			$images_array[$final_filename]['html_prev_and_img']=htmlentities("<a href=\"".$img."\" target=\"_blank\"><img src=\"".$prev."\"></a>");
+		}
+			
 	}
 }
 

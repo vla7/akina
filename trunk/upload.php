@@ -1,10 +1,10 @@
 <?php
 include_once 'hal.php';
-if(!$error)
+if(!isset($error))
 {
-	if(($_POST['resize'] == true) and ($_POST['width']+$_POST['height']==0))
+	if((isset($_POST['resize'])) and ($_POST['resize'] == true) and ($_POST['width']+$_POST['height']==0))
 		$error[]='Выбрана опция изменения размера, но не установлена ни ширина ни высота!';
-	elseif(($_POST['thumb'] == true) and ($_POST['thumb_width']+$_POST['thumb_height']==0))
+	elseif((isset($_POST['thumb'])) and ($_POST['thumb'] == true) and ($_POST['thumb_width']+$_POST['thumb_height']==0))
 		$error[]='Выбрана опция "Создать превью", но не установлена ни ширина ни высота!';
 	else
 	{

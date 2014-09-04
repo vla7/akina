@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Хостинг картинок Akina</title>
+<title>{site_title}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="{site_http_path}engine.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="{template}/style.css" media="screen" />
@@ -16,8 +16,8 @@
 <div id="wrap">
 
 <div id="header">
-<h1><a href="{site_http_path}">Фотохостинг Akina</a></h1>
-<h2>Хостинг картинок</h2> 
+<h1><a href="{site_http_path}">{site_header_h1}</a></h1>
+<h2>{site_header_h2}</h2> 
 <div id="limite">Разрешенные форматы: JPG, GIF, PNG; max: {max_size_mb} MB; {max_width}x{max_height} px; {max_quantity} одновременно.<br /></div>
 
 </div>
