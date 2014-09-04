@@ -39,6 +39,8 @@ function resize($filename, $resize_width, $resize_height, $texttype=false)
 				$type='jpg';
 			if ($ext=='.jpeg')
 				$type='jpg';
+			if ($ext=='.bmp')
+				$type='bmp';
 		}
 		else
 		{
@@ -50,6 +52,10 @@ function resize($filename, $resize_width, $resize_height, $texttype=false)
 			$type='jpg';
 			if ($info['mime']=='image/png')
 			$type='png';
+			if ($info['mime']=='image/bmp')
+			$type='bmp';
+			if ($info['mime']=='image/x-ms-bmp')
+			$type='bmp';
 		}
 
 				if ($type=='gif') {$src = imagecreatefromgif($filename);}
@@ -121,6 +127,7 @@ function resize($filename, $resize_width, $resize_height, $texttype=false)
 				if ($type=='gif') { imagegif($destination, $filename); }
 				if ($type=='png') { imagepng($destination, $filename); }
 				if ($type=='jpg') { imagejpeg($destination, $filename, $config['quality']); }
+				if ($type=='bmp') { imagegif($destination, $filename); }
 				//if ($ext=='.jpeg') { imagejpeg($destination, $filename, $config['quality']); }
 
 				imagedestroy($destination);
@@ -241,7 +248,7 @@ function check_and_move($filename)
 		$local_error[]="Ошибка: Неверное расширение изображения, допускаются ".implode(', ',$config['extensions']).". Вы пытались залить $extension";
 
 	elseif (!in_array($mime, $config['mimes']))
-		$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются JPEG, GIF, PNG. Вы пытались залить $mime";
+		$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются JPEG, GIF, PNG, BMP. Вы пытались залить $mime";
 
 	elseif ($stat['size'] > $config['max_size_byte'])
 		$local_error[]="Ошибка: Превышен максимальный размер файла: {$config['max_size_mb']} МБ";
@@ -262,6 +269,10 @@ function check_and_move($filename)
 				$ext='jpg';
 			elseif ($mime=='image/png')
 				$ext='png';
+			elseif ($mime=='image/bmp')
+				$ext='bmp';
+			elseif ($mime=='image/x-ms-bmp')
+				$ext='bmp';
 
 			$final_filename=random_string($config['random_str_quantity'], 'lower,numbers').".".$ext;
 			$uploaded_file_path = strtolower($config['uploaddir'].$config['current_path'].'/'.$final_filename);
