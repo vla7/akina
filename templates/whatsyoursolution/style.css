@@ -6,7 +6,7 @@ body {
 	padding: 0;
 	font: 70% Tahoma, Arial, Helvetica, sans-serif;
 	color: #7e7e7e; 
-	background: #FFFFFF url(bg.gif) repeat-x;
+	background: #FFFFFF url(images/bg.gif) repeat-x;
 	line-height: 16px; 
 }
 
@@ -72,7 +72,7 @@ p {
 	margin: 0px 0 2px 0; 
 	padding: 20px 0 0 5px;
 	border-top: 4px solid #000;
-	background: #FFF url(headerbg.gif) repeat-x bottom left;
+	background: #FFF url(images/headerbg.gif) repeat-x bottom left;
 	color: #808080;
 }
 
@@ -90,7 +90,7 @@ p {
 .subheader_left {
 	line-height: 28px;
 	width: 193px;
-	background: #33ADDB url(hmleftbg.gif) repeat-x;
+	background: #33ADDB url(images/hmleftbg.gif) repeat-x;
 	color: #FFFFFF;
 	padding: 0 5px 0 5px;
 }
@@ -103,7 +103,7 @@ p {
 }
 
 .subheader_right {
-	background: #F6F6F6 url(hmrightbg.gif) repeat-x;
+	background: #F6F6F6 url(images/hmrightbg.gif) repeat-x;
 	color: #626262;
 	line-height: 28px;
 	
@@ -122,7 +122,7 @@ p {
 }
 
 .subheader_right a:hover {
-	background: #33ADDB url(hmleftbg.gif) repeat-x;
+	background: #33ADDB url(images/hmleftbg.gif) repeat-x;
 	border-top: 1px solid #1A83AC;
 	color: #FFFFFF;
 }
@@ -167,7 +167,7 @@ a.info:hover .infobox {
 	width:205px; 
 	height:70px; 
 	/*border: 1px solid #ccc; */
-	background:#f4f4f4 url(question.gif) no-repeat bottom right; 
+	background:#f4f4f4 url(images/question.gif) no-repeat bottom right; 
 	color:#000; 
 	text-align:left; 
 	font-size:0.7em; 
@@ -268,7 +268,7 @@ input.text:hover {
 }
 
 .resizehandle {
-  background:transparent url(resizer.png) no-repeat scroll 45%;
+  background:transparent url(images/resizer.png) no-repeat scroll 45%;
   cursor:s-resize;
   font-size:0.1em;
   height:16px;

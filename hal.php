@@ -1,4 +1,4 @@
-<?
+<?php
 if (!defined('akina')) 
 {
 	$fp = @fopen("/log.txt", "a");
