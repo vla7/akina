@@ -10,8 +10,6 @@ function preview($filename, $final_filename, $thumb_width, $thumb_height)
 	rename("{$config['working_thumb_dir']}$filename", "{$config['thumbdir']}{$config['current_path']}/$final_filename");
 }
 
-
-
 function resize($filename, $resize_width, $resize_height, $texttype=false)
 {
 	global $config, $_POST, $error;
@@ -62,6 +60,10 @@ function resize($filename, $resize_width, $resize_height, $texttype=false)
 				if ($type=='png') {$src = imagecreatefrompng($filename);}
 				//if ($ext=='.jpeg') {$src = imagecreatefromjpeg($filename);}
 				if ($type=='jpg') {$src = imagecreatefromjpeg($filename);}
+				if ($type=='bmp')
+				{	include 'bmp.php';
+					$src = imagecreatefrombmp($filename);
+				}
 
 				$era_x = imageSX($src);
 				$era_y = imageSY($src);
@@ -127,8 +129,8 @@ function resize($filename, $resize_width, $resize_height, $texttype=false)
 				if ($type=='gif') { imagegif($destination, $filename); }
 				if ($type=='png') { imagepng($destination, $filename); }
 				if ($type=='jpg') { imagejpeg($destination, $filename, $config['quality']); }
-				if ($type=='bmp') { imagegif($destination, $filename); }
 				//if ($ext=='.jpeg') { imagejpeg($destination, $filename, $config['quality']); }
+				if ($type=='bmp') { imagebmp($destination, $filename); }
 
 				imagedestroy($destination);
 				imagedestroy($src);
