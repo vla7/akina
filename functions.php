@@ -6,11 +6,11 @@ function preview($filename, $final_filename, $thumb_width, $thumb_height)
 	global $config, $_POST;
 
 	copy("{$config['working_dir']}$filename", "{$config['working_thumb_dir']}$filename");
-	resize("{$config['working_thumb_dir']}$filename", $thumb_width, $thumb_height, $_POST['texttype']);
+	resize("{$config['working_thumb_dir']}$filename", $thumb_width, $thumb_height, $_POST['texttype'],"{$config['working_dir']}$filename");
 	rename("{$config['working_thumb_dir']}$filename", "{$config['thumbdir']}{$config['current_path']}/$final_filename");
 }
 
-function resize($filename, $resize_width, $resize_height, $texttype=false)
+function resize($filename, $resize_width, $resize_height, $texttype=false, $filename_src)
 {
 	global $config, $_POST, $error;
 
@@ -44,7 +44,7 @@ function resize($filename, $resize_width, $resize_height, $texttype=false)
 		{
 			if ($info['mime']=='image/gif')
 			$type='gif';
-			if ($info['mime']=='image/pjeg')
+			if ($info['mime']=='image/pjpeg')
 			$type='jpg';
 			if ($info['mime']=='image/jpeg')
 			$type='jpg';
@@ -56,7 +56,14 @@ function resize($filename, $resize_width, $resize_height, $texttype=false)
 			$type='bmp';
 		}
 
-				if ($type=='gif') {$src = imagecreatefromgif($filename);}
+			if (($type=='gif') and (is_ani($filename)))
+			{	include 'gif_exg.php';
+				$nGif = new GIF_eXG($filename_src,1);
+				$nGif->resize($filename,$resize_width,$resize_height,1,1); //preserve symmetry + use resampled
+			}
+			else
+			{
+				if ($type=='gif'){$src = imagecreatefromgif($filename);}
 				if ($type=='png') {$src = imagecreatefrompng($filename);}
 				//if ($ext=='.jpeg') {$src = imagecreatefromjpeg($filename);}
 				if ($type=='jpg') {$src = imagecreatefromjpeg($filename);}
@@ -90,41 +97,41 @@ function resize($filename, $resize_width, $resize_height, $texttype=false)
 				imagecopyresampled($destination,$src,0,0,0,0,$resize_width,$resize_height,$era_x,$era_y);
 
 
-		//текст на превью
-		if ($texttype && $texttype!="nothing")
-		{
-			if ($texttype == 'dimensions')
-				$text = $era_x.'x'.$era_y.'('.$filesize.')';
-			else
-				$text=$_POST['text'];
+			//текст на превью
+			if ($texttype && $texttype!="nothing")
+			{
+				if ($texttype == 'dimensions')
+					$text = $era_x.'x'.$era_y.'('.$filesize.')';
+				else
+					$text=$_POST['text'];
 
 
-		$DARKNESS=70;
-		for ($i=0;$i<$resize_width;$i++)
-		for ($j=0;$j<12;$j++)
-		{
-			$x=$i;//+550-(100+10);
-			$y=$j+($resize_height-12);
-			$rgb = imagecolorat($destination, $x, $y);
-			$rgb = imagecolorsforindex($destination, $rgb);
+				$DARKNESS=70;
+				for ($i=0;$i<$resize_width;$i++)
+				for ($j=0;$j<12;$j++)
+				{
+					$x=$i;//+550-(100+10);
+					$y=$j+($resize_height-12);
+					$rgb = imagecolorat($destination, $x, $y);
+					$rgb = imagecolorsforindex($destination, $rgb);
 
-			$rgb["red"] = $rgb["red"] > $DARKNESS ? $rgb["red"]-$DARKNESS : 0;
-			$rgb["green"] = $rgb["green"] > $DARKNESS ? $rgb["green"]-$DARKNESS : 0;
-			$rgb["blue"] = $rgb["blue"] > $DARKNESS ? $rgb["blue"]-$DARKNESS : 0;
+					$rgb["red"] = $rgb["red"] > $DARKNESS ? $rgb["red"]-$DARKNESS : 0;
+					$rgb["green"] = $rgb["green"] > $DARKNESS ? $rgb["green"]-$DARKNESS : 0;
+					$rgb["blue"] = $rgb["blue"] > $DARKNESS ? $rgb["blue"]-$DARKNESS : 0;
 
-			$c=imagecolorallocate($destination,$rgb["red"],$rgb["green"],$rgb["blue"]);
-			imagesetpixel($destination, $x, $y, $c);
+					$c=imagecolorallocate($destination,$rgb["red"],$rgb["green"],$rgb["blue"]);
+					imagesetpixel($destination, $x, $y, $c);
+				}
+
+				$white=imagecolorallocate($destination,255,255,255);
+
+				$mf = imageloadfont ('myfont.phpfont');
+
+				$text = iconv("utf-8", "windows-1251",$text);
+
+				imagestring($destination, $mf, 2, $resize_height-10, $text, $white);
 			}
-
-		$white=imagecolorallocate($destination,255,255,255);
-
-		$mf = imageloadfont ('myfont.phpfont');
-
-		$text = iconv("utf-8", "windows-1251",$text);
-
-			imagestring($destination, $mf, 2, $resize_height-10, $text, $white);
-		}
-		///////////////////
+			///////////////////
 
 				if ($type=='gif') { imagegif($destination, $filename); }
 				if ($type=='png') { imagepng($destination, $filename); }
@@ -134,8 +141,8 @@ function resize($filename, $resize_width, $resize_height, $texttype=false)
 
 				imagedestroy($destination);
 				imagedestroy($src);
-	}
-
+		}//else is_an gif
+	}//else resize_height>height
 }
 
 function CURL($url)
@@ -242,10 +249,10 @@ function check_and_move($filename)
 	$mime=get_mime($config['working_dir'].$filename);
 
 	$stat=stat($config['working_dir'].$filename);
-	
+
 	$partes = explode('.', $filename);
 	$extension = strtolower($partes[count($partes) - 1]);
-	
+
 	if (strlen($extension)<6 and !in_array($extension, $config['extensions']))
 		$local_error[]="Ошибка: Неверное расширение изображения, допускаются ".implode(', ',$config['extensions']).". Вы пытались залить $extension";
 
@@ -360,7 +367,7 @@ function make_img_code ($final_filename, $current_month=false, $current_day=fals
 			$images_array[$final_filename]['bb_prev_and_img']="[url=".$img."][img]".$prev."[/img][/url]";
 			$images_array[$final_filename]['html_prev_and_img']=htmlentities("<a href=\"".$img."\" target=\"_blank\"><img src=\"".$prev."\"></a>");
 		}
-			
+
 	}
 }
 
@@ -464,5 +471,29 @@ function formatfilesize($size)
 	}
 	return(round($size,1)." ".$iec[$i]);
 }
+
+function is_ani($filename)
+{ //функция определяет анимирован ли gif
+	//взято здесь http://php.net/manual/ru/function.imagecreatefromgif.php#88005
+    if(!($fh = @fopen($filename, 'rb')))
+        return false;
+    $count = 0;
+    //an animated gif contains multiple "frames", with each frame having a
+    //header made up of:
+    // * a static 4-byte sequence (\x00\x21\xF9\x04)
+    // * 4 variable bytes
+    // * a static 2-byte sequence (\x00\x2C)
+
+    // We read through the file til we reach the end of the file, or we've found
+    // at least 2 frame headers
+    while(!feof($fh) && $count < 2) {
+        $chunk = fread($fh, 1024 * 100); //read 100kb at a time
+        $count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00\x2C#s', $chunk, $matches);
+    }
+
+    fclose($fh);
+    return $count > 1;
+}
+
 
 ?>

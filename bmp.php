@@ -21,80 +21,80 @@
 
 class BMP
 {
-	public static function imagebmp(&$img, $filename = false)
-	{
-		return imagebmp($img, $filename);
-	}
-	
-	public static function imagecreatefrombmp($filename)
-	{
-		return imagecreatefrombmp($filename);
-	}
+        public static function imagebmp(&$img, $filename = false)
+        {
+                return imagebmp($img, $filename);
+        }
+        
+        public static function imagecreatefrombmp($filename)
+        {
+                return imagecreatefrombmp($filename);
+        }
 }
 
 function imagebmp(&$img, $filename = false)
 {
-	$wid = imagesx($img);
-	$hei = imagesy($img);
-	$wid_pad = str_pad('', $wid % 4, "\0");
-	
-	$size = 54 + ($wid + $wid_pad) * $hei * 3; //fixed
-	
-	//prepare & save header
-	$header['identifier']		= 'BM';
-	$header['file_size']		= dword($size);
-	$header['reserved']			= dword(0);
-	$header['bitmap_data']		= dword(54);
-	$header['header_size']		= dword(40);
-	$header['width']			= dword($wid);
-	$header['height']			= dword($hei);
-	$header['planes']			= word(1);
-	$header['bits_per_pixel']	= word(24);
-	$header['compression']		= dword(0);
-	$header['data_size']		= dword(0);
-	$header['h_resolution']		= dword(0);
-	$header['v_resolution']		= dword(0);
-	$header['colors']			= dword(0);
-	$header['important_colors']	= dword(0);
+        $wid = imagesx($img);
+        $hei = imagesy($img);
+        $wid_pad = str_pad('', $wid % 4, "\0");
+        
+        $size = 54 + ($wid + $wid_pad) * $hei * 3; //fixed
+        
+        //prepare & save header
+        $header['identifier']           = 'BM';
+        $header['file_size']            = dword($size);
+        $header['reserved']                     = dword(0);
+        $header['bitmap_data']          = dword(54);
+        $header['header_size']          = dword(40);
+        $header['width']                        = dword($wid);
+        $header['height']                       = dword($hei);
+        $header['planes']                       = word(1);
+        $header['bits_per_pixel']       = word(24);
+        $header['compression']          = dword(0);
+        $header['data_size']            = dword(0);
+        $header['h_resolution']         = dword(0);
+        $header['v_resolution']         = dword(0);
+        $header['colors']                       = dword(0);
+        $header['important_colors']     = dword(0);
 
-	if ($filename)
-	{
-	    $f = fopen($filename, "wb");
-	    foreach ($header AS $h)
-	    {
-	    	fwrite($f, $h);
-	    }
-	    
-		//save pixels
-		for ($y=$hei-1; $y>=0; $y--)
-		{
-			for ($x=0; $x<$wid; $x++)
-			{
-				$rgb = imagecolorat($img, $x, $y);
-				fwrite($f, byte3($rgb));
-			}
-			fwrite($f, $wid_pad);
-		}
-		fclose($f);
-	}
-	else
-	{
-	    foreach ($header AS $h)
-	    {
-	    	echo $h;
-	    }
-	    
-		//save pixels
-		for ($y=$hei-1; $y>=0; $y--)
-		{
-			for ($x=0; $x<$wid; $x++)
-			{
-				$rgb = imagecolorat($img, $x, $y);
-				echo byte3($rgb);
-			}
-			echo $wid_pad;
-		}
-	}
+        if ($filename)
+        {
+            $f = fopen($filename, "wb");
+            foreach ($header AS $h)
+            {
+                fwrite($f, $h);
+            }
+            
+                //save pixels
+                for ($y=$hei-1; $y>=0; $y--)
+                {
+                        for ($x=0; $x<$wid; $x++)
+                        {
+                                $rgb = imagecolorat($img, $x, $y);
+                                fwrite($f, byte3($rgb));
+                        }
+                        fwrite($f, $wid_pad);
+                }
+                fclose($f);
+        }
+        else
+        {
+            foreach ($header AS $h)
+            {
+                echo $h;
+            }
+            
+                //save pixels
+                for ($y=$hei-1; $y>=0; $y--)
+                {
+                        for ($x=0; $x<$wid; $x++)
+                        {
+                                $rgb = imagecolorat($img, $x, $y);
+                                echo byte3($rgb);
+                        }
+                        echo $wid_pad;
+                }
+        }
 }
 
 function imagecreatefrombmp($filename)
@@ -187,21 +187,21 @@ return $res;
 
 function dwordize($str)
 {
-	$a = ord($str[0]);
-	$b = ord($str[1]);
-	$c = ord($str[2]);
-	return $c*256*256 + $b*256 + $a;
+        $a = ord($str[0]);
+        $b = ord($str[1]);
+        $c = ord($str[2]);
+        return $c*256*256 + $b*256 + $a;
 }
 
 function byte3($n)
 {
-	return chr($n & 255) . chr(($n >> 8) & 255) . chr(($n >> 16) & 255);	
+        return chr($n & 255) . chr(($n >> 8) & 255) . chr(($n >> 16) & 255);    
 }
 function dword($n)
 {
-	return pack("V", $n);
+        return pack("V", $n);
 }
 function word($n)
 {
-	return pack("v", $n);
+        return pack("v", $n);
 }
