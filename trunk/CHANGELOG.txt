@@ -5,6 +5,14 @@ LEGEND
   [*] Enhancement
   [-] Bug fix
 
+
+v1.0.9f (r73) Sep 10, 2014
+------
+  [-] Issue 2 : Поддержка уменьшения анимированного gif
+  [*] Замена библиотеки GIF_eXG (https://github.com/Yuriy-Khomenko/GIF_eXG) на GD Enhancer (http://www.gdenhancer.com/)
+  [-] Исправлена ошибка/добавлена поддержка уменьшения анимированных GIF с прозрачным фоном.
+  [-] Подправлен config.php , убран дубль 'bmp' .
+
 v1.0.9e (r71,r72) Sep 9, 2014
 ------
   [-] Issue 2 : Поддержка уменьшения анимированного gif
