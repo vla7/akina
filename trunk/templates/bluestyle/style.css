@@ -1,0 +1,291 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 17px;
+	color: #8D8D8D;
+	height:100%;
+
+	background: linear-gradient(to bottom, #DFDEDE, #D0DEDE); /* Градиент серый*/
+	background: #D3DEDE url(images/headerline.png) repeat-x;
+}
+
+html {height:100%;}
+
+a {
+text-decoration: none;
+color: #B3B3B3;
+}
+a:hover {
+text-decoration: underline;
+color: #999999;
+}
+
+#main {
+margin: 0 auto;
+width: 1000px;
+float: center;
+}
+
+.header {
+height: 73px;
+	margin: 0 0 50px 0;
+	padding: 0px 0px 0px 0px;
+	color: #FFFFFF;
+background: #018AB2 url(images/headerline.png) repeat-x  bottom left;
+
+}
+.header h1 {
+font-size: 28px;
+letter-spacing: -1px;
+padding: 20px 0 0 20px;
+color: #FFFFFF;
+}
+.header h1 a {
+color: #FFFFFF;
+text-decoration: none;
+font-weight: 100;
+letter-spacing: -1px;
+}
+
+.header h2 {
+font-size: 19px;
+color: #FFFFFF;
+padding: 5px 0 0 20px;
+letter-spacing: -1px;
+font-weight: 100;
+}
+
+#limite {
+	font-size: 8pt;
+	float: center;
+	color: #8D8D8D
+}
+
+#menu {
+float: left;
+font-size: 20px;
+text-align: center;
+vertical-align: middle;
+
+}
+
+#menu a{
+text-decoration: none;
+text-align: center;
+vertical-align: middle;
+width: 180px;
+height: 30px;
+line-height: 25px;
+color: #FFFFFF;
+margin: 10px;
+display: inline-block;
+padding: 5px 5px; /* Поля */
+text-decoration: none; /* Убираем подчёркивание */
+}
+
+#menu a:link,#menu a:visited{
+	background: #0198C4;
+/*background: linear-gradient(to bottom, #B5C4C4, #949494);*/ /* Градиент серый*/
+	background: linear-gradient(to bottom, #00AFE1, #018AB2); /* Градиент голубой*/
+box-shadow: 0 0 5px rgba(0,0,0,0.3); /* Тень */
+}
+
+#menu a:active{
+	background: #0198C4;
+	background: linear-gradient(to bottom, #00AFE1, #018AB2); /* Градиент голубой*/
+}
+
+#menu a:hover{
+	background: #00A9DA;
+	background: linear-gradient(to bottom, #00AFE1, #01A6D6); /* Градиент голубой*/
+}
+
+#content {
+	margin: 0px auto;
+	width: 1000px;
+height:auto !important;
+height:100%;
+}
+
+.left {
+	float: left;
+	padding: 5px 0 0 5px;
+	width: 190px;
+}
+
+.right {
+	float: right;
+	width: 760px;
+	margin: 0 0 20px 0;
+	padding: 5px 5px 5px 5px;
+	color: #8E8E8E;
+/*	background-color: #8E8E8E; */
+}
+
+
+.footer {
+clear: both;
+height: 30px;
+text-align: right;
+font-size: 11px;
+color: #8E8E8E;
+margin: 10px;
+margin-top: -50px;
+line-height:13px;
+}
+
+.footer a {
+ color: #8E8E8E;
+ text-decoration: underline;
+  }
+
+.alert-error{
+background:#FFCCCC;
+border:1px solid red;
+}
+
+.fieldset{
+width: 450px;
+border:1px dotted;
+}
+
+.filebutton{
+font-size: 20px;
+text-decoration: none;
+text-align: center;
+vertical-align: middle;
+width: 220px;
+height: 40px;
+color: #FFFFFF;
+margin: 10px;
+display: inline-block;
+padding: 5px 10px; /* Поля */
+text-decoration: none; /* Убираем подчёркивание */
+background: #0198C4;
+background: linear-gradient(to bottom, #00AFE1, #018AB2); /* Градиент голубой*/
+box-shadow: 0 0 5px rgba(0,0,0,0.3); /* Тень */
+}
+
+input{
+   text-align:center;
+   font-size: 16px;
+   margin: 5px;
+}
+
+input[type="text"][disabled] {
+   background: #DEDEDE;
+}
+
+label,legend{
+   font-size: 16px;
+}
+
+.fieldsetmain{
+  border-color: #BCBCBC;
+  border-style: inset; /* Стиль линии */
+  /*border-image: radial-gradient(#000000 70%, transparent 99%) 1%;*/
+  border-image: linear-gradient(45deg, #D3DEDE, #BCBCBC, #D3DEDE) 1;
+
+  border-width: 1px; /* Толщина линии */
+  padding: 20px; /* Поля вокруг текста */
+
+}
+
+.fieldsets{
+  border-color: #BCBCBC;
+  border-style: outset; /* Стиль линии */
+  border-image: linear-gradient(-45deg, #D3DEDE, #BCBCBC, #D3DEDE) 1;
+  border-width: 1px; /* Толщина линии */
+  padding: 10px; /* Поля вокруг текста */
+
+}
+
+/*
+http://cssdeck.com/labs/css-checkbox-styles
+http://xandeadx.ru/blog/css/452
+http://xandeadx.ru/blog/css/186
+ */
+
+/*http://habrahabr.ru/post/144104/ + http://www.csscheckbox.com */
+input[type=checkbox].css-checkbox {
+  position: absolute;
+  overflow: hidden;
+	clip: rect(0 0 0 0);
+	height:1px;
+	width:1px;
+	margin:-1px;
+	padding:0;
+	border:0;
+}
+
+input[type=checkbox].css-checkbox + label.l-chb {
+	padding-left:20px;
+	height:20px;
+	display:inline-block;
+	line-height:20px;
+	background-repeat:no-repeat;
+	background-position: 0 0;
+	font-size:15px;
+	vertical-align:middle;
+	cursor:pointer;
+}
+
+input[type=checkbox].css-checkbox:checked + label.l-chb {
+  background-position: 0 -20px;
+}
+
+label.l-chb{
+	background-image:url(images/checkbox.png);
+					-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+}
+
+input[type=radio].preview_elements {
+  position: absolute;
+  overflow: hidden;
+	clip: rect(0 0 0 0);
+	height:1px;
+	width:1px;
+	margin:-1px;
+	padding:0;
+	border:0;
+}
+
+input[type=radio].preview_elements + label.l-pe {
+	padding-left:20px;
+	height:20px;
+	display:inline-block;
+	line-height:20px;
+	background-repeat:no-repeat;
+	background-position: 0 0;
+	font-size:15px;
+	vertical-align:middle;
+	cursor:pointer;
+}
+
+input[type=radio].preview_elements:checked + label.l-pe {
+  background-position: 0 -20px;
+}
+
+input[type=radio].preview_elements:disabled + label.l-pe {
+  background-position: 0 0;
+}
+
+label.l-pe{
+	background-image:url(images/radio.png);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
