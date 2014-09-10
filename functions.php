@@ -1,5 +1,6 @@
 <?php
 include_once 'hal.php';
+use gdenhancer\GDEnhancer;
 
 function preview($filename, $final_filename, $thumb_width, $thumb_height)
 {
@@ -57,9 +58,11 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 		}
 
 			if (($type=='gif') and (is_ani($filename)))
-			{	include 'gif_exg.php';
-				$nGif = new GIF_eXG($filename_src,1);
-				$nGif->resize($filename,$resize_width,$resize_height,1,1); //preserve symmetry + use resampled
+			{	include_once 'gdenhancer/GDEnhancer.php'; //path of your GDEnhancer.php
+				$image = new GDEnhancer($filename);
+				$image->backgroundResize($resize_width,$resize_height, 'shrink'); //option shrink
+				$save = $image->save();
+				file_put_contents($filename, $save['contents']);
 			}
 			else
 			{
