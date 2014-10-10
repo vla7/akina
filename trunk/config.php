@@ -12,7 +12,7 @@ $config['view_multi_width']="auto"; //ширина картинок на стр�
 $config['quality']=100;
 
 $config['mimes']=array('image/gif', 'image/pjpeg', 'image/jpeg', 'image/png', 'image/bmp', 'image/x-ms-bmp');
-$config['extensions']=array('gif', 'jpeg', 'jpg', 'png', 'bmp');
+$config['extensions']=array('gif', 'jpeg', 'jpg', 'png', 'bmp', 'bmp');
 
 $config['auto_resize']=0;  //Уменьшить изображение, по умолчанию форма: 0 - выключена, 1 - включена
 $config['width_resize_elements']=1024; //уменьшать изображения по ширине, по умолчанию в форме
@@ -42,7 +42,7 @@ $config['img_url']=$config['site_url'].'img/';
 
 //////////////////////////////////////Шаблон//////////////////////////////////////
 
-//доступные шаблоны 'graphene' , 'simple', 'whatsyoursolution'
+//доступные шаблоны 'bluestyle', 'graphene' , 'simple', 'whatsyoursolution'
 $config['template_name']='whatsyoursolution'; 
 $config['template_path']=$config['site_dir'].'/templates/'.$config['template_name'];
 $config['template_url']=$config['site_url'].'templates/'.$config['template_name'];
