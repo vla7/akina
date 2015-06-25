@@ -30,35 +30,28 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 
 		if (!$info['mime'])
 		{
-			if ($ext=='.gif')
-				$type='gif';
-			if ($ext=='.png')
-				$type='png';
-			if ($ext=='.jpg')
-				$type='jpg';
-			if ($ext=='.jpeg')
-				$type='jpg';
-			if ($ext=='.bmp')
-				$type='bmp';
+			switch( $ext )
+			{
+				case '.gif' : $type='gif'; break;
+				case '.png' : $type='png'; break;
+				case '.jpg' : $type='jpg'; break;
+				case '.jpeg': $type='jpg'; break;
+				case '.bmp' : $type='bmp'; break;
+			}
 		}
 		else
 		{
-			if ($info['mime']=='image/gif')
-			$type='gif';
-			if ($info['mime']=='image/pjpeg')
-			$type='jpg';
-			if ($info['mime']=='image/jpeg')
-			$type='jpg';
-			if ($info['mime']=='image/jpg')
-			$type='jpg';
-			if ($info['mime']=='image/x-png')
-			$type='png';
-			if ($info['mime']=='image/png')
-			$type='png';
-			if ($info['mime']=='image/bmp')
-			$type='bmp';
-			if ($info['mime']=='image/x-ms-bmp')
-			$type='bmp';
+
+			switch( $info['mime'] )
+			{
+				case 'image/gif'  : $type='gif'; break;
+				case 'image/pjpeg': $type='jpg'; break;
+				case 'image/jpeg' : $type='jpg'; break;
+				case 'image/x-png': $type='png'; break;
+				case 'image/png'  : $type='png'; break;
+				case 'image/bmp'  : $type='bmp'; break;
+				case 'image/x-ms-bmp' : $type='bmp'; break;
+			}
 		}
 
 			if (($type=='gif') and (is_ani($filename)))
@@ -72,15 +65,12 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 			{
 				if ($type=='gif'){$src = imagecreatefromgif($filename);}
 				if ($type=='png') {$src = imagecreatefrompng($filename);}
-				//if ($ext=='.jpeg') {$src = imagecreatefromjpeg($filename);}
 				if ($type=='jpg') {$src = imagecreatefromjpeg($filename);}
 				if ($type=='bmp')
 				{	include 'bmp.php';
 					$src = imagecreatefrombmp($filename);
 				}
 
-				$era_x = imageSX($src);
-				$era_y = imageSY($src);
 				$filesize = formatfilesize(filesize($filename));
 				$destination = imagecreatetruecolor($resize_width,$resize_height);
 
@@ -101,14 +91,14 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 				imagealphablending($destination, false);
 					imagesavealpha($destination, true);
 
-				imagecopyresampled($destination,$src,0,0,0,0,$resize_width,$resize_height,$era_x,$era_y);
+				imagecopyresampled($destination,$src,0,0,0,0,$resize_width,$resize_height,$width,$height);
 
 
 			//текст на превью
 			if ($texttype and $texttype!="nothing")
 			{
 				if ($texttype == 'dimensions')
-					$text = $era_x.'x'.$era_y.'('.$filesize.')';
+					$text = $width.'x'.$height.'('.$filesize.')';
 				else
 					$text=$_POST['text'];
 
@@ -143,7 +133,6 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 				if ($type=='gif') { imagegif($destination, $filename); }
 				if ($type=='png') { imagepng($destination, $filename); }
 				if ($type=='jpg') { imagejpeg($destination, $filename, $config['quality']); }
-				//if ($ext=='.jpeg') { imagejpeg($destination, $filename, $config['quality']); }
 				if ($type=='bmp') { imagebmp($destination, $filename); }
 
 				imagedestroy($destination);
@@ -241,18 +230,6 @@ function random_string($length, $chartypes)
 	return $string;
 }
 
-function get_mime($file)
-{
-	global $error;
-	if (function_exists('finfo_open')) {
-		return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $file);
-	} elseif (function_exists('mime_content_type')) {
-		return mime_content_type($file);
-	} else
-		$error[]="Невозможно определить MIME изображения, нет функций finfo_open и mime_content_type";
-}
-
-
 function check_and_move($filename)
 {
 
@@ -260,18 +237,30 @@ function check_and_move($filename)
 
 	$info=getimagesize($config['working_dir'].$filename);
 
-	$mime=get_mime($config['working_dir'].$filename);
+	$final_filename='';
+
+			switch( $info['mime'] )
+			{
+				case 'image/gif'  : $ext='gif'; break;
+				case 'image/pjpeg': $ext='jpg'; break;
+				case 'image/jpeg' : $ext='jpg'; break;
+				case 'image/x-png': $ext='png'; break;
+				case 'image/png'  : $ext='png'; break;
+				case 'image/bmp'  : $ext='bmp'; break;
+				case 'image/x-ms-bmp' : $ext='bmp'; break;
+				default: $ext='';
+				        if ($info['mime']=='') $info['mime']='n/a';
+								$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются ".implode(', ',$config['mimes']).". Вы пытались залить ".$info['mime'].".";
+								break;
+			}
 
 	$stat=stat($config['working_dir'].$filename);
 
 	$partes = explode('.', $filename);
 	$extension = strtolower($partes[count($partes) - 1]);
 
-	if (strlen($extension)<6 and !in_array($extension, $config['extensions']))
+	if (!in_array($ext, $config['extensions']))
 		$local_error[]="Ошибка: Неверное расширение изображения, допускаются ".implode(', ',$config['extensions']).". Вы пытались залить $extension";
-
-	elseif (!in_array($mime, $config['mimes']))
-		$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются JPEG, GIF, PNG, BMP. Вы пытались залить $mime";
 
 	elseif ($stat['size'] > $config['max_size_byte'])
 		$local_error[]="Ошибка: Превышен максимальный размер файла: {$config['max_size_mb']} МБ";
@@ -284,22 +273,6 @@ function check_and_move($filename)
 
 		if (!isset($local_error))
 		{
-			if ($mime=='image/gif')
-				$ext='gif';
-			elseif ($mime=='image/pjpeg')
-				$ext='jpg';
-			elseif ($mime=='image/jpeg')
-				$ext='jpg';
-			elseif ($mime=='image/jpg')
-				$ext='jpg';
-			elseif ($mime=='image/png')
-				$ext='png';
-			elseif ($mime=='image/x-png')
-				$ext='png';
-			elseif ($mime=='image/bmp')
-				$ext='bmp';
-			elseif ($mime=='image/x-ms-bmp')
-				$ext='bmp';
 
 			$final_filename=random_string($config['random_str_quantity'], 'lower,numbers').".".$ext;
 			$uploaded_file_path = strtolower($config['uploaddir'].$config['current_path'].'/'.$final_filename);

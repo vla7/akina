@@ -5,6 +5,13 @@ LEGEND
   [*] Enhancement
   [-] Bug fix
 
+v1.0.9h (r77 / github) Jun 26, 2015
+------
+  [*] Обновлена библиотека GD Enhancer до версии 4.01 (https://github.com/coldume/gd-enhancer)
+  [*] Добавлена проверка подключения файлов библиотеки GD Enhancer.
+  [+] Оптимизация кода. Убрано обращение к функциям finfo_open и mime_content_type.
+  [-] Issue 85 : "finfo_open" и "mime_content_type"
+
 v1.0.9g (github) Jun 25, 2015
 v1.0.9g (r76) Jun 18, 2015
 ------

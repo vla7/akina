@@ -2,7 +2,7 @@
 
 namespace gdenhancer\models;
 
-include 'Library.php';
+include_once 'Library.php';
 
 class Actions {
 
@@ -39,7 +39,7 @@ class Actions {
    }
 
    public function layerText($text, $fontfile, $fontsize, $fontcolor, $angle, $linespacing) {
-      include 'LayerText.php';
+      include_once 'LayerText.php';
       $fontcolor = Library::getRGBFromHex($fontcolor);
       $this->layers[]['text'] = array(
           'text'        => $text,
@@ -52,7 +52,7 @@ class Actions {
    }
 
    public function layerImage($image) {
-      include 'LayerImage.php';
+      include_once 'LayerImage.php';
       $contents = Library::getContentsFromImage($image);
       $format = Library::getFormatFromContents($contents);
       $resource = Library::getGDResourceFromContents($contents);

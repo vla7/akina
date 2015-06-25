@@ -12,7 +12,13 @@ $config['view_multi_width']="auto"; //ширина картинок на стр�
 $config['quality']=100;
 
 $config['mimes']=array('image/gif', 'image/pjpeg', 'image/jpeg', 'image/png', 'image/bmp', 'image/x-ms-bmp');
-$config['extensions']=array('gif', 'jpeg', 'jpg', 'png', 'bmp', 'bmp');
+//расширения которые можно загружать (jpeg и jpe - это jpg)
+$config['extensions']=array(
+							'gif',
+							'jpg',
+							'png',
+							'bmp',
+);
 
 $config['auto_resize']=0;  //Уменьшить изображение, по умолчанию форма: 0 - выключена, 1 - включена
 $config['width_resize_elements']=1024; //уменьшать изображения по ширине, по умолчанию в форме
@@ -91,6 +97,10 @@ $config['cachefile']=$config['working_dir']."/cachefile.dat"; //файл ста�
 if (!extension_loaded('gd') and !function_exists('gd_info'))
     $error[]='Модуль GD не установлен! Изменение размеров изображения и создание превью не будут работать.';
 
+if (!file_exists('gdenhancer/GDEnhancer.php') or !file_exists('gdenhancer/models/Run.php') or !file_exists('gdenhancer/models/Actions.php') or !file_exists('gdenhancer/models/Library.php') or !file_exists('gdenhancer/models/Output.php'))
+    $error[]='Модуль GD Enhancer не установлен! Изменение размеров изображения и создание превью не будут работать.';
+
+
 if($config['max_size_mb'] > ini_get('upload_max_filesize'))
     $error[]='Ошибка! Максимально допустимый размер загружаемого изображения в php.ini ('.ini_get('upload_max_filesize').') меньше заданного в настройках фотохостинга ('.$config['max_size_mb'].' МБ)';
 
@@ -99,9 +109,6 @@ if (!function_exists('curl_version'))
 
 if($config['max_size_mb'] > ini_get('post_max_size'))
     $error[]='Ошибка! Максимальный размер POST в настройках php ('.ini_get('post_max_size').') меньше максимально допустимого размера загружаемого изображения, заданного в настройках фотохостинга ('.$config['max_size_mb'].' МБ)';
-
-if (!function_exists('finfo_open') and !function_exists('mime_content_type'))
-  $error[]='Ошибка! Отсутствуют обязательные функции "finfo_open" и "mime_content_type". Должна быть хотя бы одна из них. Обратитесь к хостеру.';
 
 //проверка прав доступа к каталогам
 $processUser = posix_getpwuid(posix_geteuid());
