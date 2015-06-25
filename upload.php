@@ -45,16 +45,22 @@ if(!isset($error))
 
 			}
 			// Local uploading
-			if ($local_up['size'][0] ==! null)
+			if (isset($local_up['size'][0]) and ($local_up['size'][0] ==! null))
 			{
 				foreach($local_up['tmp_name'] as $key => $up)
 				{
 					$filename = $local_up['name'][$key];
 
-					copy($up, "{$config['working_dir']}$filename");
+					if (!@copy($up, "{$config['working_dir']}$filename"))
+					{
+						$returned_error = "Ошибка загрузки изображения.";
+						$final_filename = $filename;
+					}
+					else
+					{
+						list($final_filename, $returned_error)=check_and_move($filename);
+					}
 					unset($up);
-
-					list($final_filename, $returned_error)=check_and_move($filename);
 
 					make_img_code($final_filename, false, false, $returned_error);
 				}

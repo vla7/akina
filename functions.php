@@ -49,6 +49,10 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 			$type='jpg';
 			if ($info['mime']=='image/jpeg')
 			$type='jpg';
+			if ($info['mime']=='image/jpg')
+			$type='jpg';
+			if ($info['mime']=='image/x-png')
+			$type='png';
 			if ($info['mime']=='image/png')
 			$type='png';
 			if ($info['mime']=='image/bmp')
@@ -101,7 +105,7 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 
 
 			//текст на превью
-			if ($texttype && $texttype!="nothing")
+			if ($texttype and $texttype!="nothing")
 			{
 				if ($texttype == 'dimensions')
 					$text = $era_x.'x'.$era_y.'('.$filesize.')';
@@ -168,25 +172,32 @@ function CURL($url)
 
 
 	$filename=basename($url);
-	$out=fopen("{$config['working_dir']}$filename", 'wb');
-	curl_setopt($curl, CURLOPT_FILE, $out);
-
-	$res = curl_exec($curl);
-	fclose($out);
-
-	if(curl_errno($curl))
+	if($out=@fopen("{$config['working_dir']}$filename", 'wb'))
 	{
-		if(curl_errno($curl)==6)
-			$curl_error="Не удалось получить изображение: неверный адрес либо удаленный сервер не отвечает";
-		else
-			$curl_error=curl_errno($curl)." ".curl_error($curl);
+	  curl_setopt($curl, CURLOPT_FILE, $out);
 
-	    $error[]=  'Ошибка: '.$curl_error;
+	  $res = curl_exec($curl);
+	  fclose($out);
+
+	  if(curl_errno($curl))
+	  {
+		  if(curl_errno($curl)==6)
+			  $curl_error="Не удалось получить изображение: неверный адрес либо удаленный сервер не отвечает";
+		  else
+			  $curl_error=curl_errno($curl)." ".curl_error($curl);
+
+	      $error[]=  'Ошибка: '.$curl_error;
+	  }
+	  else
+		  return true;
+
+	  curl_close($curl);
 	}
 	else
-		return true;
+	{
+		$error[]="Ошибка локальной загрузки изображения.";
+	}
 
-	curl_close($curl);
 }
 
 
@@ -279,7 +290,11 @@ function check_and_move($filename)
 				$ext='jpg';
 			elseif ($mime=='image/jpeg')
 				$ext='jpg';
+			elseif ($mime=='image/jpg')
+				$ext='jpg';
 			elseif ($mime=='image/png')
+				$ext='png';
+			elseif ($mime=='image/x-png')
 				$ext='png';
 			elseif ($mime=='image/bmp')
 				$ext='bmp';
@@ -379,13 +394,13 @@ function make_img_code ($final_filename, $current_month=false, $current_day=fals
 function get_resize_proportions ($real_height, $real_width, $resize_height=false, $resize_width=false)
 {
 	//если не задана ширина, а только высота
-	if (!$resize_width && $resize_height)
+	if (!$resize_width and $resize_height)
 	{
 		$coefficient=$real_height/$resize_height; //коэффцициент уменьшения
 		$resize_width=$real_width/$coefficient; //новая ширина
 	}
 	//если не задана высота, а только ширина
-	elseif ($resize_width && !$resize_height)
+	elseif ($resize_width and !$resize_height)
 	{
 		$coefficient=$real_width/$resize_width; //коэффцициент уменьшения
 		$resize_height=$real_height/$coefficient; //новая высота
@@ -436,7 +451,7 @@ function get_dir_size($dir_name)
 		{
 			while (($file = readdir($dh)) !== false)
 			{
-				if($file !='.' && $file != '..')
+				if($file !='.' and $file != '..')
 				{
 					if(is_file($dir_name.'/'.$file))
 					{
@@ -489,7 +504,7 @@ function is_ani($filename)
 
     // We read through the file til we reach the end of the file, or we've found
     // at least 2 frame headers
-    while(!feof($fh) && $count < 2) {
+    while(!feof($fh) and $count < 2) {
         $chunk = fread($fh, 1024 * 100); //read 100kb at a time
         $count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00\x2C#s', $chunk, $matches);
     }

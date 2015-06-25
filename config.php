@@ -30,7 +30,7 @@ $config['site_dir']=getcwd();
 $config['uploaddir']=$config['site_dir'].'/img/';
 $config['thumbdir']=$config['site_dir'].'/thumbs/';
 $config['working_dir']=$config['site_dir'].'/working/';
-$config['working_thumb_dir']=$config['working_dir'].'/thumbs/';
+$config['working_thumb_dir']=$config['working_dir'].'thumbs/';
 
 //////////////////////////////////////URL//////////////////////////////////////
 
@@ -77,17 +77,18 @@ $config['curl_headers']=array(
 $config['current_month']=date ('Y-m');
 $config['current_day']=date ('d');
 $config['current_path']=$config['current_month'].'/'.$config['current_day'];
+$debug = true; // [true|false] отладка, показывать ошибки PHP включено/выключено
 
 //////////////////////////////////////Прочее//////////////////////////////////////
 
 $config['random_str_quantity']=25;
-$config['site_work']=true;
+$config['site_work']=true; // [true|false] сайт работает да/нет
 $config['cache_time']=60*60; //в секундах, 1 час.
 $config['cachefile']=$config['working_dir']."/cachefile.dat"; //файл статистики "Изображений на фотохостинге: х; занимают х.х Kb; за сутки загружено: х"
 
 //////////////////////////////////////Вывод ошибок//////////////////////////////////////
 
-if (!extension_loaded('gd') && !function_exists('gd_info'))
+if (!extension_loaded('gd') and !function_exists('gd_info'))
     $error[]='Модуль GD не установлен! Изменение размеров изображения и создание превью не будут работать.';
 
 if($config['max_size_mb'] > ini_get('upload_max_filesize'))
@@ -101,4 +102,35 @@ if($config['max_size_mb'] > ini_get('post_max_size'))
 
 if (!function_exists('finfo_open') and !function_exists('mime_content_type'))
   $error[]='Ошибка! Отсутствуют обязательные функции "finfo_open" и "mime_content_type". Должна быть хотя бы одна из них. Обратитесь к хостеру.';
+
+//проверка прав доступа к каталогам
+$processUser = posix_getpwuid(posix_geteuid());
+$uid=$processUser['uid']; //UID пользователя от имени которого работает WEB сервер
+/*
+$config['uploaddir']
+$config['thumbdir']
+$config['working_dir']
+$config['working_thumb_dir']
+*/
+$fperm=0; //счетчик ошибок прав доступа к каталогам
+
+$perms = substr(decoct(fileperms($config['working_dir'])), 2);
+$fown = fileowner($config['working_dir']);
+$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+
+$perms = substr(decoct(fileperms($config['working_thumb_dir'])), 2);
+$fown = fileowner($config['working_thumb_dir']);
+$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+
+$perms = substr(decoct(fileperms($config['uploaddir'])), 2);
+$fown = fileowner($config['uploaddir']);
+$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+
+$perms = substr(decoct(fileperms($config['thumbdir'])), 2);
+$fown = fileowner($config['thumbdir']);
+$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+
+if ($fperm)
+  $error[]='Ошибка! Некорректно установлены права доступа к каталогам. Обратитесь к инструкции по настройке/установке.';
+
 ?>
