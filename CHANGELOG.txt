@@ -5,6 +5,11 @@ LEGEND
   [*] Enhancement
   [-] Bug fix
 
+v1.0.9h (r78 / github) Jun 26, 2015
+------
+  [+] Добавлен скрипт __checker.php сравнения настроек config.php с параметрами "по умолчанию" при перехода на новую версию.
+  [*] Добавлено описание процесса перехода на новую версию в readme.txt.
+
 v1.0.9h (r77 / github) Jun 26, 2015
 ------
   [*] Обновлена библиотека GD Enhancer до версии 4.01 (https://github.com/coldume/gd-enhancer)
