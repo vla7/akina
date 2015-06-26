@@ -1,8 +1,16 @@
 <?php
 define('akina', 'photohost', true);
 
-include_once 'config.php';
-include_once 'functions.php';
+//загружаем предустановки
+if(!include_once('config.php')) die('Can\'t find config.php');
+
+//загружаем функции
+if(!include_once('functions.php')) die('Can\'t find functions.php');
+
+//отладка, показываем ошибки PHP
+if(isset($debug) and ($debug)){	error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE); }
+//прячем все сообщения об ошибках от народа
+else {	error_reporting(E_ALL^E_NOTICE); ini_set('display_errors', 0); }
 
 $site_title=$config['site_title'];
 

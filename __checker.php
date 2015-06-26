@@ -1,6 +1,36 @@
 <?php
-include_once 'hal.php';
-date_default_timezone_set("Europe/Minsk"); //настройка временной зоны http://php.net/manual/en/timezones.php
+define('akina', 'photohost', true);
+
+// расцветка для подсветки элементов
+$check_good="#33AA33";
+$check_bad="#FF3333";
+$check_empty="#666666";
+$check_element="#FF7F00";
+
+//загружаем предустановки
+if(!include_once('config.php')) die('Can\'t find config.php');
+?>
+
+<head>
+	<title>Akina. Проверка перехода на новую версию. Checking move to a new version</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+body {
+    font-family: Courier, 'Courier New', 'Times New Roman', Times, serif;
+    font-size: 11pt;
+}
+</style>
+</head>
+<body >
+<?php 
+
+function new_config()
+{
+/* --------------------------------------------------------------------------
+ Далее содержится файл конфигурации config.php поставляемый по "умолчанию" 
+ По состоянию на v1.0.9h (r77) Jun 26, 2015 
+----------------------------------------------------------------------------- */
+
 //////////////////////////////////////параметры изображений//////////////////////////////////////
 $config['max_size_mb']=5;
 $config['max_size_byte']=$config['max_size_mb']*1048576; // (bytes)
@@ -92,52 +122,101 @@ $config['site_work']=true; // [true|false] сайт работает да/нет
 $config['cache_time']=60*60; //в секундах, 1 час.
 $config['cachefile']=$config['working_dir']."/cachefile.dat"; //файл статистики "Изображений на фотохостинге: х; занимают х.х Kb; за сутки загружено: х"
 
-//////////////////////////////////////Вывод ошибок//////////////////////////////////////
+/* --------------------------------------------------------------------------
+Конец файла конфигурации config.php поставляемый по "умолчанию"
+----------------------------------------------------------------------------- */
 
-if (!extension_loaded('gd') and !function_exists('gd_info'))
-    $error[]='Модуль GD не установлен! Изменение размеров изображения и создание превью не будут работать.';
+return ($config);
+}
 
-if (!file_exists('gdenhancer/GDEnhancer.php') or !file_exists('gdenhancer/models/Run.php') or !file_exists('gdenhancer/models/Actions.php') or !file_exists('gdenhancer/models/Library.php') or !file_exists('gdenhancer/models/Output.php'))
-    $error[]='Модуль GD Enhancer не установлен! Изменение размеров изображения и создание превью не будут работать.';
+$new_config = new_config();
 
+echo "<p>";
+// расцветка для подсветки элементов
+echo "Расцветка элементов после проверки:<br />\n";
+echo "<ul>";
+echo "<li><font color='$check_element'> Название элемента из конфигурации.</font><br />\n";
+echo "<li><font color='$check_good'> Элемент <b>совпадает</b> с вашей конфигурацией.</font><br />\n";
+echo "<li><font color='$check_bad'> Нужна корректировка параметра. Элемент есть и <b>не совпадает</b> с вашей конфигурацинй.</font><br />\n";
+echo "<li><font color='$check_empty'> Элемент <b>отсутствует</b> в вашей конфигурацинй.</font><br />\n";
+echo "</ul>";
+echo "</p>";
 
-if($config['max_size_mb'] > ini_get('upload_max_filesize'))
-    $error[]='Ошибка! Максимально допустимый размер загружаемого изображения в php.ini ('.ini_get('upload_max_filesize').') меньше заданного в настройках фотохостинга ('.$config['max_size_mb'].' МБ)';
+//echo "<pre>"; print_r($new_config); echo "</pre>";
 
-if (!function_exists('curl_version'))
-	$error[]='Модуль cURL не установлен. Загрузка изображений с удаленных серверов не будет работать';
+echo "<hr><br>";
 
-if($config['max_size_mb'] > ini_get('post_max_size'))
-    $error[]='Ошибка! Максимальный размер POST в настройках php ('.ini_get('post_max_size').') меньше максимально допустимого размера загружаемого изображения, заданного в настройках фотохостинга ('.$config['max_size_mb'].' МБ)';
+$level=0;
+function check_array($array,$arr_key)
+{
+	GLOBAL $config,$new_config,$level;
+	GLOBAL $check_good,$check_bad,$check_empty,$check_element;
+	foreach ($array as $key => $value)
+	{
+		$check_b="<font color='$check_empty'>";
+		$check_e="</font>";
+	
+  	if (!is_array($value))
+  	{
+      if (!empty($arr_key))
+      {
+				if (in_array($value, $config[$arr_key]))
+	 			{
+				  $check_b="<font color='$check_good'>";
+				  $check_e="</font>";
+				}
+			}
+			else
+			if (isset($config[$key]))
+			{
+				if ($config[$key]===$new_config[$key])
+				{
+				  $check_b="<font color='$check_good'>";
+				  $check_e="</font>";
+				}
+				else
+				{
+				  $check_b="<font color='$check_bad'>";
+				  $check_e="</font>";
+				}
+			}
 
-//проверка прав доступа к каталогам
-$processUser = posix_getpwuid(posix_geteuid());
-$uid=$processUser['uid']; //UID пользователя от имени которого работает WEB сервер
-/*
-$config['uploaddir']
-$config['thumbdir']
-$config['working_dir']
-$config['working_thumb_dir']
-*/
-$fperm=0; //счетчик ошибок прав доступа к каталогам
+		  for ($i=0;$i < $level+1 ;$i++)  echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+		  
+ 		  if ($level) $ccf=''; else  $ccf="<font color='$check_element'>\$config</font>";
+			echo $ccf."['<font color='$check_element'>".$key."</font>'] => ".$check_b.$value."&nbsp".$check_e."<br />\n";
+		}
+		else
+		{
+			if (array_key_exists($key, $config))
+			{
+			  $check_b="<font color='#00CC00'>";
+			  $check_e="</font>";
+			}
 
-$perms = substr(decoct(fileperms($config['working_dir'])), 2);
-$fown = fileowner($config['working_dir']);
-$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+		  for ($i=0;$i < $level+1 ;$i++)  echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+			echo "<font color='$check_element'>\$config</font>['<font color='$check_element'>".$key."</font>'] => ".$check_b."Array".$check_e."<br />\n";
 
-$perms = substr(decoct(fileperms($config['working_thumb_dir'])), 2);
-$fown = fileowner($config['working_thumb_dir']);
-$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+		  for ($i=0;$i < $level+1 ;$i++)  echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+		  echo "&nbsp;&nbsp;(<br />\n";
+			$level++;
+			check_array($value,$key);
+			$level--;
+		  for ($i=0;$i < $level+1 ;$i++)  echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+		  echo "&nbsp;&nbsp;)<br />\n";
+		}
+	}
+    
+}
 
-$perms = substr(decoct(fileperms($config['uploaddir'])), 2);
-$fown = fileowner($config['uploaddir']);
-$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+check_array($new_config,NULL);
 
-$perms = substr(decoct(fileperms($config['thumbdir'])), 2);
-$fown = fileowner($config['thumbdir']);
-$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+if ((!isset($config['cachefile'])) and (file_exists($config['site_dir']."/cache" )) )
+echo "<font color='$check_bad'>** Нужна корректировка параметра</font> <font color='$check_element'>\$config</font>['<font color='$check_element'>cachefile</font>']=<font color='$check_element'>\$config</font>['<font color='$check_element'>site_dir</font>'].'/cache'</font>\n";
 
-if ($fperm)
-  $error[]='Ошибка! Некорректно установлены права доступа к каталогам. Обратитесь к инструкции по настройке/установке.';
 
 ?>
+<br><hr><br>
+
+</body>
+</html>

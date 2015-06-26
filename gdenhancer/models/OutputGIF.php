@@ -23,7 +23,7 @@ class OutputGIF extends Output {
       @imagedestroy($this->layersresource);
    }
 
-   public function save() {
+   public function save($quality = 100) {
       $contents = $this->contents;
       $format = $this->format;
       $extension = $this->getExtensionFromFormat($format);
@@ -118,7 +118,7 @@ class OutputGIF extends Output {
    }
 
    protected function setContents() {
-      include 'GIFCreate.php';
+      include_once 'GIFCreate.php';
       $gif = new GIFCreate($this->frames);
       $this->contents = $gif->contents;
    }

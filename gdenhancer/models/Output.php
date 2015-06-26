@@ -22,8 +22,8 @@ class Output {
       @imagedestroy($this->resource);
    }
 
-   public function save() {
-      $contents = Library::getContentsFromGDResource($this->resource, $this->format);
+   public function save($quality = 100) {
+      $contents = Library::getContentsFromGDResource($this->resource, $this->format, $quality);
       $format = $this->format;
       $extension = $this->getExtensionFromFormat($format);
       $mime = $this->getMimeFromFormat($format);
@@ -208,13 +208,13 @@ class Output {
    protected function getMimeFromFormat($format) {
       switch ($format) {
          case 'gif':
-            return 'image/gif; charset=utf-8';
+            return 'image/gif';
             break;
          case 'jpeg':
-            return 'image/jpeg; charset=utf-8';
+            return 'image/jpeg';
             break;
          case 'png':
-            return'image/png; charset=utf-8';
+            return'image/png';
       }
    }
 

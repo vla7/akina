@@ -14,7 +14,10 @@ if(isset($_REQUEST['v']) and (!$_POST))
 	}
 }
 
-$urls_quantity=count($images_array);
+if (isset($images_array))
+  $urls_quantity=count($images_array);
+else
+  $urls_quantity=0;
 
 if ($urls_quantity >= 1)
 {
@@ -71,6 +74,7 @@ if ($urls_quantity >= 1)
 	}//конец foreach
 
 	//если картинка одна - нафиг мульти
+ if (isset($bb_img_arr))
 	if(count($bb_img_arr) < 2)
 		$view_one_template=preg_replace("/\[multi_img\](.*?)\[\/multi_img\]/isu", '',$view_one_template);
 	else
@@ -100,7 +104,7 @@ else
 {
 	$parse_main['{content}']='';
 	
-	if($_REQUEST['v'])
+	if(isset($_REQUEST['v']) and $_REQUEST['v'])
 	{
 		header('HTTP/1.0 404 Not Found');
 		$error[]='Изображение не найдено.';
