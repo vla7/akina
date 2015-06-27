@@ -27,6 +27,7 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 	else
 	{
 		list($resize_width, $resize_height)=get_resize_proportions($height, $width, $resize_height, $resize_width);
+		$type='';
 
 		if (!$info['mime'])
 		{
@@ -36,7 +37,7 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 				case '.png' : $type='png'; break;
 				case '.jpg' : $type='jpg'; break;
 				case '.jpeg': $type='jpg'; break;
-				case '.bmp' : $type='bmp'; break;
+				//case '.bmp' : $type='bmp'; break; - здесь уже не должно быть BMP
 			}
 		}
 		else
@@ -49,95 +50,57 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 				case 'image/jpeg' : $type='jpg'; break;
 				case 'image/x-png': $type='png'; break;
 				case 'image/png'  : $type='png'; break;
-				case 'image/bmp'  : $type='bmp'; break;
-				case 'image/x-ms-bmp' : $type='bmp'; break;
+				//case 'image/bmp'  : $type='bmp'; break;  - здесь уже не должно быть BMP
+				//case 'image/x-ms-bmp' : $type='bmp'; break;
 			}
 		}
 
-			if (($type=='gif') and (is_ani($filename)))
-			{	include_once 'gdenhancer/GDEnhancer.php'; //path of your GDEnhancer.php
+		if ($type!='')
+		{
+				include_once 'gdenhancer/GDEnhancer.php'; //path of GDEnhancer.php
 				$image = new GDEnhancer($filename);
 				$image->backgroundResize($resize_width,$resize_height, 'shrink'); //option shrink
+
+				//текст на превью
+				if (isset($texttype) and $texttype!="nothing")
+			  {
+
+					$filesize = formatfilesize(filesize($filename));
+
+					if ($texttype == 'dimensions')
+						$text = $width.'x'.$height.'('.$filesize.')';
+					else
+						$text=$_POST['text'];
+
+					$DARKNESS=70;
+
+					//"полупрозрачный" слой подложки под текст
+					$imglayer = imagecreatetruecolor($width, 15);
+					imagesavealpha($imglayer, true);
+					$color = imagecolorallocatealpha($imglayer, 0, 0, 0, $DARKNESS);
+					imagefill($imglayer, 0, 0, $color);
+					ob_start();
+					imagepng($imglayer);
+					$image_data = ob_get_contents();
+					ob_end_clean();
+					imagedestroy($imglayer);
+
+					$image->layerImage($image_data);
+					$image->layerMove(0, "top", 0, $resize_height-15);
+					$save = $image->save();
+					unset($image);
+
+					//сам текст
+					$image = new GDEnhancer($save['contents']);
+					$image->layerText($text, $config['site_dir']."/bender.otf", '10', '#FFFFFF', 0, 1);
+					$image->layerMove(0, "top", 2, $resize_height-14);
+
+				}
+
 				$save = $image->save();
 				file_put_contents($filename, $save['contents']);
-			}
-			else
-			{
-				if ($type=='gif'){$src = imagecreatefromgif($filename);}
-				if ($type=='png') {$src = imagecreatefrompng($filename);}
-				if ($type=='jpg') {$src = imagecreatefromjpeg($filename);}
-				if ($type=='bmp')
-				{	include 'bmp.php';
-					$src = imagecreatefrombmp($filename);
-				}
-
-				$filesize = formatfilesize(filesize($filename));
-				$destination = imagecreatetruecolor($resize_width,$resize_height);
-
-				// gif
-				if ($type=='gif')
-				{
-					$transparente = imagecolortransparent($src);
-					imagepalettecopy($src, $destination);
-					imagefill($destination, 0, 0, $transparente);
-					imagecolortransparent($destination, $transparente);
-					imagetruecolortopalette($destination, true, 256);
-				}
-				else
-				{
-					imagecolortransparent($destination, imagecolorallocate($destination, 0, 0, 0) );
-				}
-
-				imagealphablending($destination, false);
-					imagesavealpha($destination, true);
-
-				imagecopyresampled($destination,$src,0,0,0,0,$resize_width,$resize_height,$width,$height);
-
-
-			//текст на превью
-			if ($texttype and $texttype!="nothing")
-			{
-				if ($texttype == 'dimensions')
-					$text = $width.'x'.$height.'('.$filesize.')';
-				else
-					$text=$_POST['text'];
-
-
-				$DARKNESS=70;
-				for ($i=0;$i<$resize_width;$i++)
-				for ($j=0;$j<12;$j++)
-				{
-					$x=$i;//+550-(100+10);
-					$y=$j+($resize_height-12);
-					$rgb = imagecolorat($destination, $x, $y);
-					$rgb = imagecolorsforindex($destination, $rgb);
-
-					$rgb["red"] = $rgb["red"] > $DARKNESS ? $rgb["red"]-$DARKNESS : 0;
-					$rgb["green"] = $rgb["green"] > $DARKNESS ? $rgb["green"]-$DARKNESS : 0;
-					$rgb["blue"] = $rgb["blue"] > $DARKNESS ? $rgb["blue"]-$DARKNESS : 0;
-
-					$c=imagecolorallocate($destination,$rgb["red"],$rgb["green"],$rgb["blue"]);
-					imagesetpixel($destination, $x, $y, $c);
-				}
-
-				$white=imagecolorallocate($destination,255,255,255);
-
-				$mf = imageloadfont ('myfont.phpfont');
-
-				$text = iconv("utf-8", "windows-1251",$text);
-
-				imagestring($destination, $mf, 2, $resize_height-10, $text, $white);
-			}
-			///////////////////
-
-				if ($type=='gif') { imagegif($destination, $filename); }
-				if ($type=='png') { imagepng($destination, $filename); }
-				if ($type=='jpg') { imagejpeg($destination, $filename, $config['quality']); }
-				if ($type=='bmp') { imagebmp($destination, $filename); }
-
-				imagedestroy($destination);
-				imagedestroy($src);
-		}//else is_an gif
+				unset($image);
+		}
 	}//else resize_height>height
 }
 
@@ -250,7 +213,7 @@ function check_and_move($filename)
 				case 'image/x-ms-bmp' : $ext='bmp'; break;
 				default: $ext='';
 				        if ($info['mime']=='') $info['mime']='n/a';
-								$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются ".implode(', ',$config['mimes']).". Вы пытались залить ".$info['mime'].".";
+								$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются ".implode(', ',$config['mimes']).". Вы пытались залить ".$info['mime'];
 								break;
 			}
 
@@ -260,7 +223,7 @@ function check_and_move($filename)
 	$extension = strtolower($partes[count($partes) - 1]);
 
 	if (!in_array($ext, $config['extensions']))
-		$local_error[]="Ошибка: Неверное расширение изображения, допускаются ".implode(', ',$config['extensions']).". Вы пытались залить $extension";
+		$local_error[]="Ошибка: Неверное расширение изображения, допускаются ".strtoupper(implode(', ',$config['extensions'])).". Вы пытались залить ".strtoupper($extension);
 
 	elseif ($stat['size'] > $config['max_size_byte'])
 		$local_error[]="Ошибка: Превышен максимальный размер файла: {$config['max_size_mb']} МБ";
@@ -273,6 +236,21 @@ function check_and_move($filename)
 
 		if (!isset($local_error))
 		{
+
+			if ($ext=='bmp') //преобразуем BMP в PNG
+			{
+				include 'bmp.php';
+				$src = imagecreatefrombmp($config['working_dir'].$filename);
+				imagepng($src, $config['working_dir'].$filename);
+				imagedestroy($src);
+				$ext='png';
+				$partes[count($partes) - 1]=$ext;
+				$filenamepng = implode(".", $partes);
+				if (!rename("{$config['working_dir']}$filename", "{$config['working_dir']}$filenamepng"))
+					$local_error[]= "Ошибка преобразования изображения";
+				$filename=$filenamepng;
+				unset($filenamepng);
+			}
 
 			$final_filename=random_string($config['random_str_quantity'], 'lower,numbers').".".$ext;
 			$uploaded_file_path = strtolower($config['uploaddir'].$config['current_path'].'/'.$final_filename);
@@ -319,7 +297,6 @@ function check_and_move($filename)
 }
 
 
-
 function make_img_code ($final_filename, $current_month=false, $current_day=false, $returned_error=false)
 {
 	global $config, $_POST, $images_array;
@@ -363,7 +340,6 @@ function make_img_code ($final_filename, $current_month=false, $current_day=fals
 }
 
 
-
 function get_resize_proportions ($real_height, $real_width, $resize_height=false, $resize_width=false)
 {
 	//если не задана ширина, а только высота
@@ -395,6 +371,7 @@ function get_resize_proportions ($real_height, $real_width, $resize_height=false
 	return array($resize_width, $resize_height);
 }
 
+
 function get_template ($tpl_name)
 {
 	global $config, $error;
@@ -407,11 +384,13 @@ function get_template ($tpl_name)
 	return $template;
 }
 
+
 function parse_template ($template_source,$data_array)
 {
 	return str_replace(array_keys($data_array), array_values($data_array), $template_source);
 
 }
+
 
 function get_dir_size($dir_name)
 {
@@ -451,6 +430,7 @@ function get_dir_size($dir_name)
 	return array ($dir_size, $file_count,$file24_count);
 }
 
+
 function formatfilesize($size)
 {
 	$i=0;
@@ -462,29 +442,5 @@ function formatfilesize($size)
 	}
 	return(round($size,1)." ".$iec[$i]);
 }
-
-function is_ani($filename)
-{ //функция определяет анимирован ли gif
-	//взято здесь http://php.net/manual/ru/function.imagecreatefromgif.php#88005
-    if(!($fh = @fopen($filename, 'rb')))
-        return false;
-    $count = 0;
-    //an animated gif contains multiple "frames", with each frame having a
-    //header made up of:
-    // * a static 4-byte sequence (\x00\x21\xF9\x04)
-    // * 4 variable bytes
-    // * a static 2-byte sequence (\x00\x2C)
-
-    // We read through the file til we reach the end of the file, or we've found
-    // at least 2 frame headers
-    while(!feof($fh) and $count < 2) {
-        $chunk = fread($fh, 1024 * 100); //read 100kb at a time
-        $count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00\x2C#s', $chunk, $matches);
-    }
-
-    fclose($fh);
-    return $count > 1;
-}
-
 
 ?>
