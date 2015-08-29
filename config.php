@@ -1,6 +1,7 @@
 <?php
 include_once 'hal.php';
 date_default_timezone_set("Europe/Minsk"); //настройка временной зоны http://php.net/manual/en/timezones.php
+
 //////////////////////////////////////параметры изображений//////////////////////////////////////
 $config['max_size_mb']=5;
 $config['max_size_byte']=$config['max_size_mb']*1048576; // (bytes)
@@ -92,6 +93,25 @@ $config['site_work']=true; // [true|false] сайт работает да/нет
 $config['cache_time']=60*60; //в секундах, 1 час.
 $config['cachefile']=$config['working_dir']."/cachefile.dat"; //файл статистики "Изображений на фотохостинге: х; занимают х.х Kb; за сутки загружено: х"
 
+//////////////////////////////////////Проверка и создание каталогов (бывший engine.php)//////////////////////////////////////
+
+$uploaddir=$config['uploaddir'].$config['current_path'];
+$thumbdir=$config['thumbdir'].$config['current_path'];
+
+if (!is_dir ($config['working_thumb_dir']))
+	mkdir ($config['working_thumb_dir'], 0755, true);
+
+if (!is_dir ($uploaddir))
+	mkdir ($uploaddir, 0755, true);
+
+if (!is_dir ($thumbdir))
+	mkdir ($thumbdir, 0755, true);
+
+if (!is_writable($uploaddir))
+	$error[]="Ошибка! Директория ".$uploaddir." недоступна для записи";
+if (!is_writable($thumbdir))
+	$error[]="Ошибка! Директория ".$thumbdir." недоступна для записи";
+
 //////////////////////////////////////Вывод ошибок//////////////////////////////////////
 
 if (!extension_loaded('gd') and !function_exists('gd_info'))
@@ -110,34 +130,29 @@ if (!function_exists('curl_version'))
 if($config['max_size_mb'] > ini_get('post_max_size'))
     $error[]='Ошибка! Максимальный размер POST в настройках php ('.ini_get('post_max_size').') меньше максимально допустимого размера загружаемого изображения, заданного в настройках фотохостинга ('.$config['max_size_mb'].' МБ)';
 
+
 //проверка прав доступа к каталогам
-$processUser = posix_getpwuid(posix_geteuid());
-$uid=$processUser['uid']; //UID пользователя от имени которого работает WEB сервер
-/*
-$config['uploaddir']
-$config['thumbdir']
-$config['working_dir']
-$config['working_thumb_dir']
-*/
+$uid=getmyuid();
+
 $fperm=0; //счетчик ошибок прав доступа к каталогам
 
 $perms = substr(decoct(fileperms($config['working_dir'])), 2);
 $fown = fileowner($config['working_dir']);
-$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+$fperm += (($uid!=$fown and $perms[2]!='5') || ($uid==$fown and $perms[0]!='7'))?1:0;
 
 $perms = substr(decoct(fileperms($config['working_thumb_dir'])), 2);
 $fown = fileowner($config['working_thumb_dir']);
-$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+$fperm += (($uid!=$fown and $perms[2]!='5') || ($uid==$fown and $perms[0]!='7'))?1:0;
 
 $perms = substr(decoct(fileperms($config['uploaddir'])), 2);
 $fown = fileowner($config['uploaddir']);
-$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+$fperm += (($uid!=$fown and $perms[2]!='5') || ($uid==$fown and $perms[0]!='7'))?1:0;
 
 $perms = substr(decoct(fileperms($config['thumbdir'])), 2);
 $fown = fileowner($config['thumbdir']);
-$fperm += (($uid!=$fown and $perms[2]!='7') || ($uid==$fown and $perms[0]!='7'))?1:0;
+$fperm += (($uid!=$fown and $perms[2]!='5') || ($uid==$fown and $perms[0]!='7'))?1:0;
 
 if ($fperm)
-  $error[]='Ошибка! Некорректно установлены права доступа к каталогам. Обратитесь к инструкции по настройке/установке.';
+  $error[]='Ошибка! Некорректно установлены права доступа к каталогам. Обратитесь к инструкции по настройке/установке. '.$fperm;
 
 ?>
