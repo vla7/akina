@@ -211,10 +211,7 @@ function check_and_move($filename)
 				case 'image/png'  : $ext='png'; break;
 				case 'image/bmp'  : $ext='bmp'; break;
 				case 'image/x-ms-bmp' : $ext='bmp'; break;
-				default: $ext='';
-				        if ($info['mime']=='') $info['mime']='n/a';
-								$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются ".implode(', ',$config['mimes']).". Вы пытались залить ".$info['mime'];
-								break;
+				default: $ext='fail'; $info['mime']='n/a'; break;
 			}
 
 	$stat=stat($config['working_dir'].$filename);
@@ -222,7 +219,10 @@ function check_and_move($filename)
 	$partes = explode('.', $filename);
 	$extension = strtolower($partes[count($partes) - 1]);
 
-	if (!in_array($ext, $config['extensions']))
+	if ($info['mime']=='n/a')
+		$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются ".implode(', ',$config['mimes']).". Вы пытались залить ".$info['mime'];
+		
+	elseif (!in_array($ext, $config['extensions']))
 		$local_error[]="Ошибка: Неверное расширение изображения, допускаются ".strtoupper(implode(', ',$config['extensions'])).". Вы пытались залить ".strtoupper($extension);
 
 	elseif ($stat['size'] > $config['max_size_byte'])
