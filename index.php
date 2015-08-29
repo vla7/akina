@@ -26,7 +26,6 @@ if(!$view && $action=='' && !isset($_GET['p']))
 	$parse_main['{content}']=parse_template(get_template('upload'), array());
 elseif($action=='upload')
 {
-	include_once 'engine.php';
 	include_once 'upload.php';
 	include_once 'view.php';
 	$site_title='Изображение(я) загружено(ы) - '.$config['site_title'];
@@ -50,7 +49,6 @@ else
 {
 	include_once 'error404.php';
 	$site_title='Страница не найдена - '.$config['site_title'];
-
 }
 
 $parse_main['{template}']=$config['template_url'];
