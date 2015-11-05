@@ -62,9 +62,8 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 				$image->backgroundResize($resize_width,$resize_height, 'shrink'); //option shrink
 
 				//текст на превью
-				if (isset($texttype) and $texttype!="nothing")
-			  {
-
+				if (isset($texttype) and $texttype and $texttype!="nothing")
+				{
 					$filesize = formatfilesize(filesize($filename));
 
 					if ($texttype == 'dimensions')
@@ -72,7 +71,7 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 					else
 						$text=$_POST['text'];
 
-					$DARKNESS=70;
+					$DARKNESS=70;//FIXME: вынести в конфиг!
 
 					//"полупрозрачный" слой подложки под текст
 					$imglayer = imagecreatetruecolor($width, 15);
