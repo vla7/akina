@@ -91,7 +91,7 @@ function resize($filename, $resize_width, $resize_height, $texttype=false, $file
 
 					//сам текст
 					$image = new GDEnhancer($save['contents']);
-					$image->layerText($text, $config['site_dir']."/bender.otf", '10', '#FFFFFF', 0, 1);
+					$image->layerText($text, $config['site_dir']."/K1FS.ttf", '10', '#FFFFFF', 0, 1);
 					$image->layerMove(0, "top", 2, $resize_height-14);
 
 				}
