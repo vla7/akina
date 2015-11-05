@@ -1,4 +1,6 @@
 <div class="view">
+	Прямые ссылки всех картинок <br />
+	<textarea cols="100" rows="10" class="code_fields" >{multi_img}</textarea><br/>
 	BB-код всех картинок<br />
 	<textarea cols="100" rows="10" class="code_fields" >{multi_bb_img}</textarea>
 	HTML-код всех картинок<br />
