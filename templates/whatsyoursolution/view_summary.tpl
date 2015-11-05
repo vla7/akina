@@ -3,6 +3,8 @@
 	<textarea cols="100" rows="10" class="code_fields" >{multi_img}</textarea><br/>
 	BB-код всех картинок<br />
 	<textarea cols="100" rows="10" class="code_fields" >{multi_bb_img}</textarea>
+	Страницы просмотра всех картинок <br />
+	<textarea cols="100" rows="10" class="code_fields" >{multi_pages}</textarea><br/>
 	HTML-код всех картинок<br />
 	<textarea cols="100" rows="10" class="code_fields" >{multi_html_img}</textarea>
 	[multi_img_prev]<br/>
