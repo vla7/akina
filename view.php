@@ -43,9 +43,11 @@ if ($urls_quantity >= 1)
 				else
 					$parse_one_img['{img}']='<a href="'.$img['url_img'].'"><img src='.$img['url_img'].' rw="'.$width.'" rh="'.$height.'" width="'.$config['view_multi_width'].'"></a>';
 	
-				$parse_one_img['{view_img}']= $img['view_img_page'];
-				$parse_one_img['{url_img}']=$img['url_img'];
-				$direct_img_arr[]=$img['url_img'];
+				$parse_one_img['{view_img}']= $img['view_img_page']; //ссылка на страницу просмотра
+				$parse_one_img['{url_img}']=$img['url_img']; //прямая ссылка на картинку
+				
+				$page_img_arr[]=$img['view_img_page']; //группированные ссылки на страницы просмотра при мульти
+				$direct_img_arr[]=$img['url_img']; //группированные прямые ссылки при мульти
 				$bb_img_arr[]=$parse_one_img['{bb_img}']='[url='.$config['site_url'].']'.$img['bb_img'].'[/url]';
 				$html_img_arr[]=$parse_one_img['{html_img}']='<a href=\''.$config['site_url'].'\' target=\'_blank\'>'.$img['html_img'].'</a>';
 	
@@ -82,6 +84,7 @@ if ($urls_quantity >= 1)
 	{
 		$view_summary_template=get_template('view_summary');
 		
+		$parse_multi_img['{multi_pages}']=implode("\n", $page_img_arr);
 		$parse_multi_img['{multi_img}']=implode("\n", $direct_img_arr);
 		$parse_multi_img['{multi_bb_img}']=implode("\n", $bb_img_arr);
 		$parse_multi_img['{multi_html_img}']=implode("\n", $html_img_arr);
