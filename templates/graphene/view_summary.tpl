@@ -1,6 +1,6 @@
 <br />
 Прямые ссылки всех картинок<br />
-<textarea cols="95" rows="10" onclick="select_field(this);" >{multi_img}</textarea><br/>
+<textarea cols="95" rows="10" onclick="select_field(this);" >{multi_img}</textarea>
 BB-код всех картинок<br />
 <textarea cols="95" rows="10" onclick="select_field(this);" >{multi_bb_img}</textarea>
 Страницы просмотра всех картинок <br />
