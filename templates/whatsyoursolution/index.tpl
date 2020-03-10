@@ -5,9 +5,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="{site_http_path}engine.css" media="screen" />
 <link rel="stylesheet" type="text/css" href="{template}/style.css" media="screen" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
+<script src="://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
 <!--[if lt IE 9]>
-  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <script src="://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <script src="{site_http_path}js/main.js" type="text/javascript"></script>
 </head>
