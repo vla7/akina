@@ -43,7 +43,7 @@ $config['working_thumb_dir']=$config['working_dir'].'thumbs/';
 
 preg_match('/\/(.*\/)index.php/', $_SERVER['PHP_SELF'], $out);
 $folder = isset($out[1]) ? $out[1]:'';
-$config['site_url']='http://'.$_SERVER['HTTP_HOST'].'/'.$folder;
+$config['site_url']='//'.$_SERVER['HTTP_HOST'].'/'.$folder;
 $config['thumbs_url']=$config['site_url'].'thumbs/';
 $config['img_url']=$config['site_url'].'img/';
 
