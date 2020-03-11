@@ -219,7 +219,7 @@ function check_and_move($filename)
 		$partes = explode('.', $filename);
 		$extension = strtolower($partes[count($partes) - 1]);
 
-		if ($info['mime']=='n/a')
+		if ($ext=='fail')
 			$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются ".implode(', ',$config['mimes']).". Вы пытались залить ".$mime;
 
 		elseif (!in_array($ext, $config['extensions']))
