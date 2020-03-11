@@ -196,43 +196,44 @@ function check_and_move($filename)
 {
 
 	global $config, $_POST;
+	if(!file_exists($config['working_dir'].$filename))
+                $local_error[]='Файл не найден в working_dir';
+        else
+        {
+		$info=getimagesize($config['working_dir'].$filename);
+		$mime=mime_content_type($config['working_dir'].$filename);
+		$final_filename='';
+		switch( $info['mime'] )
+		{
+			case 'image/gif'  : $ext='gif'; break;
+			case 'image/pjpeg': $ext='jpg'; break;
+			case 'image/jpeg' : $ext='jpg'; break;
+			case 'image/x-png': $ext='png'; break;
+			case 'image/png'  : $ext='png'; break;
+			case 'image/bmp'  : $ext='bmp'; break;
+			case 'image/x-ms-bmp' : $ext='bmp'; break;
+			default: $ext='fail'; break;
+		}
 
-	$info=getimagesize($config['working_dir'].$filename);
+		$stat=stat($config['working_dir'].$filename);
+		$partes = explode('.', $filename);
+		$extension = strtolower($partes[count($partes) - 1]);
 
-	$final_filename='';
+		if ($info['mime']=='n/a')
+			$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются ".implode(', ',$config['mimes']).". Вы пытались залить ".$mime;
 
-			switch( $info['mime'] )
-			{
-				case 'image/gif'  : $ext='gif'; break;
-				case 'image/pjpeg': $ext='jpg'; break;
-				case 'image/jpeg' : $ext='jpg'; break;
-				case 'image/x-png': $ext='png'; break;
-				case 'image/png'  : $ext='png'; break;
-				case 'image/bmp'  : $ext='bmp'; break;
-				case 'image/x-ms-bmp' : $ext='bmp'; break;
-				default: $ext='fail'; $info['mime']='n/a'; break;
-			}
+		elseif (!in_array($ext, $config['extensions']))
+			$local_error[]="Ошибка: Неверное расширение изображения, допускаются ".strtoupper(implode(', ',$config['extensions'])).". Вы пытались залить ".strtoupper($extension);
 
-	$stat=stat($config['working_dir'].$filename);
+		elseif ($stat['size'] > $config['max_size_byte'])
+			$local_error[]="Ошибка: Превышен максимальный размер файла: {$config['max_size_mb']} МБ";
 
-	$partes = explode('.', $filename);
-	$extension = strtolower($partes[count($partes) - 1]);
+		elseif ($info['1'] > $config['max_height'])
+			$local_error[]="Ошибка: Превышена максимальная высота изображения: {$config['max_height']} пикселей";
 
-	if ($info['mime']=='n/a')
-		$local_error[]="Ошибка: Неверный MIME-тип изображения, допускаются ".implode(', ',$config['mimes']).". Вы пытались залить ".$info['mime'];
-		
-	elseif (!in_array($ext, $config['extensions']))
-		$local_error[]="Ошибка: Неверное расширение изображения, допускаются ".strtoupper(implode(', ',$config['extensions'])).". Вы пытались залить ".strtoupper($extension);
-
-	elseif ($stat['size'] > $config['max_size_byte'])
-		$local_error[]="Ошибка: Превышен максимальный размер файла: {$config['max_size_mb']} МБ";
-
-	elseif ($info['1'] > $config['max_height'])
-		$local_error[]="Ошибка: Превышена максимальная высота изображения: {$config['max_height']} пикселей";
-
-	elseif ($info['0'] > $config['max_width'])
-		$local_error[]="Ошибка: Превышена максимальная ширина изображения: {$config['max_width']} пикселей";
-
+		elseif ($info['0'] > $config['max_width'])
+			$local_error[]="Ошибка: Превышена максимальная ширина изображения: {$config['max_width']} пикселей";
+	}
 		if (!isset($local_error))
 		{
 
