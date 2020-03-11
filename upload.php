@@ -11,7 +11,7 @@ if(!isset($error))
 		if (isset($_POST['web_uploadfile']))
 		{
 			$_POST['web_uploadfile'] = preg_replace("/\s/", '', $_POST['web_uploadfile']);//вырезаем переносы строк
-			preg_match_all ('#(https?://[\w-]+[\.\w-]+/((?!https?://)[\w- ./?%&=])+)#', $_POST['web_uploadfile'], $out);
+			preg_match_all ('#(https?://[\w\-]+[\.\w\-]+/((?!https?://)[\w\- ./?%&=])+)#', $_POST['web_uploadfile'], $out);
 			$web_links_quantity=count($out['0']);
 			if($web_links_quantity>0)
 			{
