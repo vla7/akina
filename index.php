@@ -1,5 +1,5 @@
 <?php
-define('akina', 'photohost', true);
+define('akina', 'photohost');
 
 //загружаем предустановки
 if(!include_once('config.php')) die('Can\'t find config.php');
