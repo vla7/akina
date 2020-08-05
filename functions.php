@@ -179,14 +179,14 @@ function random_string($length, $chartypes)
 	// Длина строки с символами
 	$chars_length = (strlen($chars) - 1);
 	// Создаем нашу строку
-	$string = $chars{rand(0, $chars_length)};
+	$string = $chars[rand(0, $chars_length)];
 	// Генерируем нашу строку
 	for ($i = 1; $i < $length; $i = strlen($string))
 	{
 	// Выбираем случайный элемент из строки с допустимыми символами
-	$random = $chars{rand(0, $chars_length)};
+	$random = $chars[rand(0, $chars_length)];
 	// Убеждаемся в том, что два символа не будут идти подряд
-	if ($random != $string{$i - 1}) $string .= $random;
+	if ($random != $string[$i - 1]) $string .= $random;
 	}
 	// Возвращаем результат
 	return $string;
