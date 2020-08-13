@@ -115,18 +115,20 @@ if (!is_writable($thumbdir))
 
 //////////////////////////////////////Вывод ошибок//////////////////////////////////////
 
+if (!extension_loaded('fileinfo') and !function_exists('mime_content_type'))
+    $error[]='PHP расширение fileinfo не установлено!';
+
 if (!extension_loaded('gd') and !function_exists('gd_info'))
-    $error[]='Модуль GD не установлен! Изменение размеров изображения и создание превью не будут работать.';
+    $error[]='PHP расширение GD не установлено! Изменение размеров изображения и создание превью не будут работать.';
+
+if (!function_exists('curl_version'))
+        $error[]='PHP равширение cURL не установлено. Загрузка изображений с удаленных серверов не будет работать';
 
 if (!file_exists('gdenhancer/GDEnhancer.php') or !file_exists('gdenhancer/models/Run.php') or !file_exists('gdenhancer/models/Actions.php') or !file_exists('gdenhancer/models/Library.php') or !file_exists('gdenhancer/models/Output.php'))
-    $error[]='Модуль GD Enhancer не установлен! Изменение размеров изображения и создание превью не будут работать.';
-
+    $error[]='Модуль GD Enhancer не найден! Изменение размеров изображения и создание превью не будут работать.';
 
 if($config['max_size_mb'] > ini_get('upload_max_filesize'))
     $error[]='Ошибка! Максимально допустимый размер загружаемого изображения в php.ini ('.ini_get('upload_max_filesize').') меньше заданного в настройках фотохостинга ('.$config['max_size_mb'].' МБ)';
-
-if (!function_exists('curl_version'))
-	$error[]='Модуль cURL не установлен. Загрузка изображений с удаленных серверов не будет работать';
 
 if($config['max_size_mb'] > ini_get('post_max_size'))
     $error[]='Ошибка! Максимальный размер POST в настройках php ('.ini_get('post_max_size').') меньше максимально допустимого размера загружаемого изображения, заданного в настройках фотохостинга ('.$config['max_size_mb'].' МБ)';
