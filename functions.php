@@ -11,7 +11,7 @@ function preview($filename, $final_filename, $thumb_width, $thumb_height)
 	rename("{$config['working_thumb_dir']}$filename", "{$config['thumbdir']}{$config['current_path']}/$final_filename");
 }
 
-function resize($filename, $resize_width, $resize_height, $texttype=false, $filename_src)
+function resize($filename, $resize_width, $resize_height, $texttype=false)
 {
 	global $config, $_POST, $error;
 
